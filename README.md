@@ -1,2 +1,3 @@
 # SHDEVOPS-27
-Netology course
+
+** DevOps-инженер: курс для действующих IT-специалистов
