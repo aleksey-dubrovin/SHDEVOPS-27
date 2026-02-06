@@ -36,9 +36,6 @@
 
 <img width="1221" height="1255" alt="Снимок экрана_20260205_171722" src="https://github.com/user-attachments/assets/1523adb9-502b-4f60-a5dc-ee1357ce1035" />
 
----
-
-[https://github.com/aleksey-dubrovin/shvirtd-example-python](https://github.com/aleksey-dubrovin/shvirtd-example-python)
 
 ### Задача 4
 
