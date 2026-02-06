@@ -38,6 +38,17 @@
 
 ---
 
+https://github.com/aleksey-dubrovin/SHDEVOPS-27/blob/main/05-virt-04-docker-in-practice/README.md
+
+---
+
+### Задача 4
+
+---
+
+
+---
+
 
 
 ---
