@@ -38,13 +38,22 @@
 
 ---
 
-https://github.com/aleksey-dubrovin/SHDEVOPS-27/blob/main/05-virt-04-docker-in-practice/README.md
-
----
+[https://github.com/aleksey-dubrovin/shvirtd-example-python](https://github.com/aleksey-dubrovin/shvirtd-example-python)
 
 ### Задача 4
 
 ---
+
+<img width="776" height="925" alt="Снимок экрана_20260206_005147" src="https://github.com/user-attachments/assets/5b44fc69-b1fa-4bee-9d2a-5159fb165ec4" />
+
+---
+
+[https://github.com/aleksey-dubrovin/shvirtd-example-python](https://github.com/aleksey-dubrovin/shvirtd-example-python)
+
+### Задача 5
+
+---
+
 
 
 ---
