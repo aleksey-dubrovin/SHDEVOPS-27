@@ -50,13 +50,19 @@
 
 [https://github.com/aleksey-dubrovin/shvirtd-example-python](https://github.com/aleksey-dubrovin/shvirtd-example-python)
 
-### Задача 5
+### Задача 6
 
 ---
 
-
+<img width="2104" height="1248" alt="Снимок экрана_20260206_193342" src="https://github.com/user-attachments/assets/08d8a24d-6f88-433c-8886-f5ce37f45e47" />
 
 ---
+
+<img width="1333" height="172" alt="Снимок экрана_20260206_193815" src="https://github.com/user-attachments/assets/d313db3d-0ca9-4cbc-8f7d-5bd336aa8232" />
+
+---
+
+<img width="2214" height="390" alt="Снимок экрана_20260206_194018" src="https://github.com/user-attachments/assets/e3be299b-3970-490d-862c-22930dfea40a" />
 
 
 
