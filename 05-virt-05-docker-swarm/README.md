@@ -15,7 +15,7 @@
 
 # sudo docker swarm init --advertise-addr 10.130.0.18
 
-# sudo docker swarm join --token SWMTKN-1-1st4kp8e6wtuv9k7rlmq7ne6129mywgbp2vbo7q8nfu5b2o7ll-dfibu865cbxsvkqeu2bgoe5aa 10.130.0.18:2377
+# sudo docker swarm join --token $TOKEN 10.130.0.18:2377
 
 ```
 
