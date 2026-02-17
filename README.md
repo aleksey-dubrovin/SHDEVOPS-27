@@ -11,3 +11,5 @@
 [Ссылки для установки открытого ПО, без необходимости использования VPN](https://github.com/netology-code/devops-materials/tree/master)
 
 [Terraform Best Practices](https://www.terraform-best-practices.com/)
+
+[Terraform Documentation](https://developer.hashicorp.com/terraform/docs)
