@@ -14,3 +14,11 @@ exclude = ["registry.terraform.io/*/*"]
 }
 ```
 Общедоступное [зеркало](https://registry.tfpla.net/providers/yandex-cloud/yandex/latest/docs) документации providers.
+
+[Синтаксис HCL](https://developer.hashicorp.com/terraform/language/syntax/configuration)
+
+[Resouce Blocks](https://developer.hashicorp.com/terraform/language/block/resource)
+
+[Data Sources Blocks](https://developer.hashicorp.com/terraform/language/data-sources)
+
+[Провайдеры](https://developer.hashicorp.com/terraform/language/block/provider)
