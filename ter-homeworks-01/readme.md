@@ -1,6 +1,7 @@
 ## Домашнее задание к занятию «Введение в Terraform»
 
 Подробная [инструкция](https://yandex.cloud/ru/docs/tutorials/infrastructure-management/terraform-quickstart#configure-provider) от Yandex Сloud
+
 ```
 provider_installation {
 network_mirror {
@@ -12,3 +13,4 @@ exclude = ["registry.terraform.io/*/*"]
 }
 }
 ```
+Общедоступное [зеркало](https://registry.tfpla.net/providers/yandex-cloud/yandex/latest/docs) документации providers.
