@@ -9,3 +9,5 @@
 [Листинги кода видеокурса VIRT](https://github.com/netology-code/virt-video-code/blob/main/README.md)
 
 [Ссылки для установки открытого ПО, без необходимости использования VPN](https://github.com/netology-code/devops-materials/tree/master)
+
+[Terraform Best Practices](https://www.terraform-best-practices.com/)
