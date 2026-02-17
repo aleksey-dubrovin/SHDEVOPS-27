@@ -1,4 +1,7 @@
-"
+## Домашнее задание к занятию «Введение в Terraform»
+
+Подробная [инструкция](https://yandex.cloud/ru/docs/tutorials/infrastructure-management/terraform-quickstart#configure-provider) от Yandex Сloud
+```
 provider_installation {
 network_mirror {
 url = "https://terraform-mirror.yandexcloud.net/"
@@ -8,4 +11,4 @@ direct {
 exclude = ["registry.terraform.io/*/*"]
 }
 }
-"
+```
