@@ -1,4 +1,4 @@
-## Домашнее задание к занятию «Введение в Terraform»
+## Введение в Terraform
 
 Подробная [инструкция](https://yandex.cloud/ru/docs/tutorials/infrastructure-management/terraform-quickstart#configure-provider) от Yandex Сloud
 
@@ -22,3 +22,5 @@ exclude = ["registry.terraform.io/*/*"]
 [Data Sources Blocks](https://developer.hashicorp.com/terraform/language/data-sources)
 
 [Провайдеры](https://developer.hashicorp.com/terraform/language/block/provider)
+
+## Домашнее задание к занятию «Введение в Terraform»
