@@ -1,6 +1,6 @@
 ## Введение в Terraform
 
-[Презентация]()
+[Презентация](https://github.com/aleksey-dubrovin/SHDEVOPS-27/blob/main/ter-homeworks-01/1._Введение_в_Terraform.pdf)
 
 Подробная [инструкция](https://yandex.cloud/ru/docs/tutorials/infrastructure-management/terraform-quickstart#configure-provider) от Yandex Сloud
 
