@@ -26,3 +26,12 @@ exclude = ["registry.terraform.io/*/*"]
 [Провайдеры](https://developer.hashicorp.com/terraform/language/block/provider)
 
 ## Домашнее задание к занятию «Введение в Terraform»
+
+#### 1.
+
+<img width="1145" height="1016" alt="image" src="https://github.com/user-attachments/assets/b7cd89dd-a8dd-45eb-b8fc-d6bb2e8733b9" />
+
+#### 2.
+
+
+
