@@ -92,7 +92,20 @@ personal.auto.tfvars
 }
 ```
 
-#### 8
+#### 8.
+
+```
+# docker_image.nginx_latest will be destroyed
+  - resource "docker_image" "nginx_latest" {
+      - id           = "sha256:5cdef4ac3335f68428701c14c5f12992f5e3669ce8ab7309257d263eb7a856b1nginx:latest" -> null
+      - image_id     = "sha256:5cdef4ac3335f68428701c14c5f12992f5e3669ce8ab7309257d263eb7a856b1" -> null
+      - keep_locally = true -> null
+      - name         = "nginx:latest" -> null
+      - repo_digest  = "nginx@sha256:341bf0f3ce6c5277d6002cf6e1fb0319fa4252add24ab6a0e262e0056d313208" -> null
+    }
+```
+Для создания ресурса nginx_latest используется базовый образ из репозитория с параметром *keep_locally = true*.
+**keep_locally (Boolean) If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.**
 
 
 
