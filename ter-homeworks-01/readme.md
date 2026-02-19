@@ -1,5 +1,7 @@
 ## Введение в Terraform
 
+[Презентация]()
+
 Подробная [инструкция](https://yandex.cloud/ru/docs/tutorials/infrastructure-management/terraform-quickstart#configure-provider) от Yandex Сloud
 
 ```
