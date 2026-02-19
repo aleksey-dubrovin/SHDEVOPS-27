@@ -80,7 +80,19 @@ personal.auto.tfvars
 
 #### 7.
 
+```
+{
+  "version": 4,
+  "terraform_version": "1.14.5",
+  "serial": 14,
+  "lineage": "f1b87b53-e40c-6a4c-05bf-c46a7e5032fe",
+  "outputs": {},
+  "resources": [],
+  "check_results": null
+}
+```
 
+#### 8
 
 
 
