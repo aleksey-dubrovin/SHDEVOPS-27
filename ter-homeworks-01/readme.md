@@ -70,6 +70,9 @@ personal.auto.tfvars
 
 #### 5.
 
+<img width="1447" height="1215" alt="image" src="https://github.com/user-attachments/assets/ae6807e2-f287-40ff-99fe-1baf6f28b54c" />
+
+#### 6.
 
 
 
