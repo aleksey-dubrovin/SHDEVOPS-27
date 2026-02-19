@@ -33,5 +33,25 @@ exclude = ["registry.terraform.io/*/*"]
 
 #### 2.
 
+```
+# Local .terraform directories and files
+**/.terraform/*
+.terraform*
+
+!.terraformrc
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# own secret vars store.
+personal.auto.tfvars
+```
+Файл .gitignore исключает из публикации все файлы ,названия которых начинаются с .terraform и каталог .terraform. Так же исключает файлы текущего состояния развернутой системы *.tfstate и файл именнования personal.auto.tfvars. Соотвественно в данных файлах можно безопасно хранить личную и секретную информацию. 
+А вот файл terraform.tfvars не указан в исключении ,поэтому хранить в нём секретные перемененые не рекомендуется.
+
+#### 3.
+
+
 
 
