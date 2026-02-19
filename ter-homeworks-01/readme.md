@@ -107,6 +107,8 @@ personal.auto.tfvars
 Для создания ресурса nginx_latest используется базовый образ из репозитория с параметром *keep_locally = true*.
 **keep_locally (Boolean) If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.**
 
+## Дополнительное задание (со звёздочкой*)
+
 
 
 
