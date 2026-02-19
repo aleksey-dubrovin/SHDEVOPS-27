@@ -25,6 +25,8 @@ exclude = ["registry.terraform.io/*/*"]
 
 [Провайдеры](https://developer.hashicorp.com/terraform/language/block/provider)
 
+[All of the registries, all of the insights](https://library.tf/) 
+
 ## Домашнее задание к занятию «Введение в Terraform»
 
 #### 1.
