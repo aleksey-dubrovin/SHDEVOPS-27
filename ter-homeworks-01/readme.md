@@ -59,6 +59,19 @@ personal.auto.tfvars
 
 <img width="1421" height="1226" alt="image" src="https://github.com/user-attachments/assets/3f10825b-89d6-4b1d-8515-09db5d9ba9a6" />
 
+#### 4.
+
+<img width="1173" height="443" alt="image" src="https://github.com/user-attachments/assets/61f711e3-0f57-4b07-98f3-ba1b6c4fe227" />
+
+- Добавлен label для *resource "docker_image" "nginx_latest"*
+- Исправлен label для *resource "docker_container" "nginx-1"*
+- Исправлена ссылка на образ из ресурса *image = docker_image.nginx_latest.image_id*
+- Исправлено значение переменной для имени контейнера *"example_${random_password.random_string.result}"*
+
+#### 5.
+
+
+
 
 
 
