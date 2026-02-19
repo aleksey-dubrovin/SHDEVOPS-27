@@ -52,6 +52,16 @@ personal.auto.tfvars
 
 #### 3.
 
+<img width="1405" height="909" alt="image" src="https://github.com/user-attachments/assets/510ad0c8-23ee-4578-ac99-409d80349747" />
+
+>[!CAUTION]
+>"result": "JZO4AanA3XhcZEDs",
+
+<img width="1421" height="1226" alt="image" src="https://github.com/user-attachments/assets/3f10825b-89d6-4b1d-8515-09db5d9ba9a6" />
+
+
+
+
 
 
 
