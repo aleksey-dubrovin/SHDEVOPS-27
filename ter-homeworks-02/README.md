@@ -16,7 +16,8 @@ yc resource-manager folder add-access-binding b1glfq89j9n7quk0cnf0 --role admin 
 
 ![alt text](image-2.png)
 
-Исправлено название профиля standard-v4, так как было указано не верно. А так же было принято решение использовать профиль standard-v3, так как v4 ненайден.  
+Исправлено название профиля standard-v4, так как было указано не верно. А так же было принято решение использовать профиль standard-v3, так как v4 не найден.  
+* Platform "standard-v4" not found
 
 ![alt text](image-4.png)
 
@@ -24,7 +25,6 @@ yc resource-manager folder add-access-binding b1glfq89j9n7quk0cnf0 --role admin 
 
 * the specified number of cores is not available on platform "standard-v3"; allowed core number: 2, 4
 * the specified core fraction is not available on platform "standard-v3"; allowed core fractions: 20, 50, 100
-* Platform "standard-v4" not found
 
 ![alt text](image-5.png)
 
