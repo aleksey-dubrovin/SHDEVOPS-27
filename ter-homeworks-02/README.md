@@ -16,7 +16,7 @@ yc resource-manager folder add-access-binding b1glfq89j9n7quk0cnf0 --role admin 
 
 ![alt text](image-2.png)
 
-Исправлено название профиля standard-v4, так как было указано не верно. 
+Исправлено название профиля standard-v4, так как было указано не верно. А так же было принято решение использовать профиль standard-v3, так как v4 ненайден.  
 
 ![alt text](image-4.png)
 
