@@ -8,11 +8,11 @@
 
 ![alt text](image-1.png)
 
+![alt text](image-3.png)
+
 ```bash
 yc resource-manager folder add-access-binding b1glfq89j9n7quk0cnf0 --role admin --subject serviceAccount:ajekv8hrk7kan34m0ou4
 ```
-
-![alt text](image-3.png)
 
 ![alt text](image-2.png)
 
