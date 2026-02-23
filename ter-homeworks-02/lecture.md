@@ -1,4 +1,4 @@
-## Основы работы с Terraform
+# Основы работы с Terraform
 
 [Презентация](https://github.com/aleksey-dubrovin/SHDEVOPS-27/blob/main/ter-homeworks-02/Основы_работы_с_Terraform.pdf)
 
@@ -19,6 +19,7 @@ export YC_FOLDER_ID=$(yc config get folder-id)
 содержимое ~/.bashrc
 export TF_VAR_yc_token = $(yc iam create-token)
 код terraform:
+
 ```HCL
 provider "yandex" {
 token = var.yc_token
