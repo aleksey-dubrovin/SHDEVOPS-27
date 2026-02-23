@@ -3,22 +3,27 @@
 [Презентация](https://github.com/aleksey-dubrovin/SHDEVOPS-27/blob/main/ter-homeworks-02/Основы_работы_с_Terraform.pdf)
 
 ```bash
+terraform providers lock -net-mirror=https://terraform-mirror.yandexcloud.net -platform=<название_платформы_1> -platform=<название_платформы_2> yandex-cloud/yandex
+```
+
+```bash
 export YC_TOKEN=$(yc iam create-token --impersonate-service-account-id <идентификатор_сервисного_аккаунта>)
 export YC_CLOUD_ID=$(yc config get cloud-id)
 export YC_FOLDER_ID=$(yc config get folder-id)
 
 ```
 
-```bash
-terraform providers lock -net-mirror=https://terraform-mirror.yandexcloud.net -platform=<название_платформы_1> -platform=<название_платформы_2> yandex-cloud/yandex
-```
-
 ```HCL
+Формат: export TF_VAR_image_name = "ubuntu-2004-lts"
+Префикс TF_VAR_ отбрасывается
+Безопасная аутентификация для yandex provider:
+содержимое ~/.bashrc
+export TF_VAR_yc_token = $(yc iam create-token)
+код terraform:
 provider "yandex" {
-#Небезопасный способ, только для изучения!
-token = "<iam-token или OAuth-токен>"
-cloud_id = "<идентификатор_облака>"
-folder_id = "<идентификатор_каталога>"
+token = var.yc_token
+cloud_id = var.yc_cloud_id
+folder_id = var.yc_folder_id
 zone = "ru-central1-a"
 }
 ```
