@@ -29,3 +29,5 @@ yc resource-manager folder add-access-binding b1glfq89j9n7quk0cnf0 --role admin 
 ![alt text](image-5.png)
 
 ![alt text](image-6.png)
+
+Параметры использования ресурсов , в частности preemptible = true (прерываемость) и core_fraction=5 (гарантируема доля использования CPU) позволяют сэкономить бюджет на этапе развертывания и отладки, без изменения архитектуры ВМ. 
