@@ -4,7 +4,7 @@
 
 Подробная [инструкция](https://yandex.cloud/ru/docs/tutorials/infrastructure-management/terraform-quickstart#configure-provider) от Yandex Сloud
 
-```
+```HCL
 provider_installation {
 network_mirror {
 url = "https://terraform-mirror.yandexcloud.net/"
@@ -15,6 +15,7 @@ exclude = ["registry.terraform.io/*/*"]
 }
 }
 ```
+
 Общедоступное [зеркало](https://registry.tfpla.net/providers/yandex-cloud/yandex/latest/docs) документации providers.
 
 [Синтаксис HCL](https://developer.hashicorp.com/terraform/language/syntax/configuration)
