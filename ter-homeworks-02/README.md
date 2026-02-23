@@ -13,6 +13,16 @@ export YC_FOLDER_ID=$(yc config get folder-id)
 terraform providers lock -net-mirror=https://terraform-mirror.yandexcloud.net -platform=<название_платформы_1> -platform=<название_платформы_2> yandex-cloud/yandex
 ```
 
+```HCL
+provider "yandex" {
+#Небезопасный способ, только для изучения!
+token = "<iam-token или OAuth-токен>"
+cloud_id = "<идентификатор_облака>"
+folder_id = "<идентификатор_каталога>"
+zone = "ru-central1-a"
+}
+```
+
 ```bash
 yc compute image list --folder-id standard-images
 ```
