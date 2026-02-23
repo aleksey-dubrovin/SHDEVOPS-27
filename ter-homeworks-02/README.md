@@ -2,6 +2,8 @@
 
 ## Задание 1
 
+![alt text](image-7.png)
+
 ![alt text](image.png)
 
 ![alt text](image-1.png)
@@ -20,3 +22,6 @@ yc resource-manager folder add-access-binding b1glfq89j9n7quk0cnf0 --role admin 
 * the specified core fraction is not available on platform "standard-v3"; allowed core fractions: 20, 50, 100
 * Platform "standard-v4" not found
 
+![alt text](image-5.png)
+
+![alt text](image-6.png)
