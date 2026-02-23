@@ -13,18 +13,24 @@ export YC_FOLDER_ID=$(yc config get folder-id)
 
 ```
 
-```HCL
-Формат: export TF_VAR_image_name = "ubuntu-2004-lts"
+* Формат: export TF_VAR_image_name = "ubuntu-2004-lts"
 Префикс TF_VAR_ отбрасывается
-Безопасная аутентификация для yandex provider:
+* Безопасная аутентификация для yandex provider:
 содержимое ~/.bashrc
 export TF_VAR_yc_token = $(yc iam create-token)
 код terraform:
+```HCL
 provider "yandex" {
 token = var.yc_token
 cloud_id = var.yc_cloud_id
 folder_id = var.yc_folder_id
 zone = "ru-central1-a"
+}
+
+provider "yandex" {
+  cloud_id                 = "b1gn3ndpua1j6jaabf79"
+  folder_id                = "b1gfu61oc15cb99nqmfe"
+  service_account_key_file = file("~/.authorized_key.json")
 }
 ```
 
