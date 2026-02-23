@@ -16,7 +16,11 @@ yc resource-manager folder add-access-binding b1glfq89j9n7quk0cnf0 --role admin 
 
 ![alt text](image-2.png)
 
+Исправлено название профиля standard-v4, так как было указано не верно. 
+
 ![alt text](image-4.png)
+
+Были найдены и исправлены следующие ошибки:
 
 * the specified number of cores is not available on platform "standard-v3"; allowed core number: 2, 4
 * the specified core fraction is not available on platform "standard-v3"; allowed core fractions: 20, 50, 100
