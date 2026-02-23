@@ -108,3 +108,7 @@ output "external_ip_address_vm_2" {
   value = yandex_compute_instance.vm-2.network_interface.0.nat_ip_address
 }
 ```
+
+[Writing Terraform configurations](https://www.terraform-best-practices.com/writing-terraform-configurations)
+
+[Infrastructure using Terraform](https://github.com/antonbabenko/terraform-best-practices/tree/master/examples/small-terraform)
