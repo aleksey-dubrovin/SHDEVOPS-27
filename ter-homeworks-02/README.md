@@ -127,3 +127,9 @@ output "external_ip_address_vm_2" {
 [Writing Terraform configurations](https://www.terraform-best-practices.com/writing-terraform-configurations)
 
 [Infrastructure using Terraform](https://github.com/antonbabenko/terraform-best-practices/tree/master/examples/small-terraform)
+
+[Use variables](https://developer.hashicorp.com/terraform/language/values/variables)
+
+[Use outputs](https://developer.hashicorp.com/terraform/language/values/outputs)
+
+[Use locals](https://developer.hashicorp.com/terraform/language/values/locals)
