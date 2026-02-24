@@ -15,7 +15,7 @@ resource "yandex_compute_instance" "platform" {
   platform_id = var.vm_web_platform
   resources {
     cores         = var.vm_web_config.cores
-    memory        = var.wm_web_config.memory
+    memory        = var.vm_web_config.memory
     core_fraction = var.vm_web_config.core_fraction
   }
   boot_disk {
