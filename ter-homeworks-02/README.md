@@ -34,3 +34,8 @@ yc resource-manager folder add-access-binding b1glfq89j9n7quk0cnf0 --role admin 
 
 ## Задание 2
 
+<img width="1471" height="282" alt="image" src="https://github.com/user-attachments/assets/baafe380-8266-4b5a-ab09-ea882be8905d" />
+
+## Задание 3
+
+
