@@ -30,6 +30,37 @@ variable "vpc_name" {
   description = "VPC network & subnet name"
 }
 
+variable "vm_web_image" {
+  type = string
+  description = "yandex compute image"
+  default = "ubuntu-2004-lts"
+}
+
+variable "vm_web_name" {
+  type = string
+  description = "yandex compute instance name"
+  default = "netology-develop-platform-web"
+}
+
+variable "vm_web_platform" {
+  type = string
+  description = "yandex compute instance platform"
+  default = "standard-v3"
+}
+
+variable "vm_web_config" {
+  description = "yandex compute instance resources"
+  type = object({
+    cores         = number
+    memory        = number
+    core_fraction = number
+  })
+  default = {
+    cores         = 2
+    memory        = 1
+    core_fraction = 50
+  }
+}
 
 ###ssh vars
 

@@ -8,15 +8,15 @@ resource "yandex_vpc_subnet" "develop" {
   v4_cidr_blocks = var.default_cidr
 }
 data "yandex_compute_image" "ubuntu" {
-  family = "ubuntu-2004-lts"
+  family = var.vm_web_image
 }
 resource "yandex_compute_instance" "platform" {
-  name        = "netology-develop-platform-web"
-  platform_id = "standard-v3"
+  name        = var.vm_web_name
+  platform_id = var.vm_web_platform
   resources {
-    cores         = 2
-    memory        = 1
-    core_fraction = 50
+    cores         = var.vm_web_config.cores
+    memory        = var.wm_web_config.memory
+    core_fraction = var.vm_web_config.core_fraction
   }
   boot_disk {
     initialize_params {
