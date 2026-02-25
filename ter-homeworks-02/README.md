@@ -38,4 +38,13 @@ yc resource-manager folder add-access-binding b1glfq89j9n7quk0cnf0 --role admin 
 
 ## Задание 3
 
+![alt text](image-8.png)
+
+![alt text](image-9.png)
+
+## Задание 4
+
+![alt text](image-10.png)
+
+![alt text](image-11.png)
 
