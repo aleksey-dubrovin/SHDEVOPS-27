@@ -1,9 +1,3 @@
-variable "vm_db_name" {
-  type = string
-  description = "yandex compute instance name"
-  default = "netology-develop-platform-db"
-}
-
 variable "vm_db_platform" {
   type = string
   description = "yandex compute instance platform"

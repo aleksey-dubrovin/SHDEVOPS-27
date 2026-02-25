@@ -49,10 +49,10 @@ variable "vm_image" {
   default = "ubuntu-2004-lts"
 }
 
-variable "vm_web_name" {
-  type = string
-  description = "yandex compute instance name"
-  default = "netology-develop-platform-web"
+variable "vm_purpose" {
+  type = list(string)
+  description = "yandex compute instance purpose"
+  default = ["web", "db"]
 }
 
 variable "vm_web_platform" {
