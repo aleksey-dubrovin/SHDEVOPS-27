@@ -14,13 +14,20 @@ variable "folder_id" {
 }
 
 variable "default_zone" {
-  type        = string
-  default     = "ru-central1-a"
+  type        = list(string)
+  default     = ["ru-central1-a", "ru-central1-b", "ru-central1-d"]
   description = "https://cloud.yandex.ru/docs/overview/concepts/geo-scope"
 }
-variable "default_cidr" {
+
+variable "subnet_platform" {
   type        = list(string)
-  default     = ["10.0.1.0/24"]
+  default     = ["10.0.3.0/24"]
+  description = "https://cloud.yandex.ru/docs/vpc/operations/subnet-create"
+}
+
+variable "subnet_db" {
+  type        = list(string)
+  default     = ["10.0.2.0/24"]
   description = "https://cloud.yandex.ru/docs/vpc/operations/subnet-create"
 }
 
@@ -30,7 +37,13 @@ variable "vpc_name" {
   description = "VPC network & subnet name"
 }
 
-variable "vm_web_image" {
+variable "vpc_subnet" {
+  type = list(string)
+  default = ["platform", "db"]
+  description = "vpc subnet name"
+}
+
+variable "vm_image" {
   type = string
   description = "yandex compute image"
   default = "ubuntu-2004-lts"
