@@ -22,13 +22,16 @@ resource "yandex_compute_instance" "platform" {
   platform_id = var.vm_web_platform
   allow_stopping_for_update = true
   resources {
-    cores         = var.vm_web_config.cores
-    memory        = var.vm_web_config.memory
-    core_fraction = var.vm_web_config.core_fraction
+    cores         = var.vms_resources["web"].cores
+    memory        = var.vms_resources["web"].memory
+    core_fraction = var.vms_resources["web"].core_fraction
+    
   }
   boot_disk {
     initialize_params {
       image_id = data.yandex_compute_image.ubuntu.image_id
+      size = var.vms_resources["web"].hdd_size
+      type = var.vms_resources["web"].hdd_type 
     }
   }
   scheduling_policy {
@@ -40,8 +43,11 @@ resource "yandex_compute_instance" "platform" {
   }
 
   metadata = {
-    serial-port-enable = 1
-    ssh-keys           = "ubuntu:${var.vms_ssh_root_key}"
+    serial-port-enable = var.metadata["web"].serial-port-enable
+    ssh-keys           = var.metadata["web"].ssh-keys
+  #metadata = {
+  #  serial-port-enable = 1
+  #  ssh-keys           = "ubuntu:${var.vms_ssh_root_key}"
   }
 
 }
@@ -51,13 +57,15 @@ resource "yandex_compute_instance" "db" {
   platform_id = var.vm_db_platform
   zone = var.default_zone[1]
   resources {
-    cores         = var.vm_db_config.cores
-    memory        = var.vm_db_config.memory
-    core_fraction = var.vm_db_config.core_fraction
+    cores         = var.vms_resources["db"].cores
+    memory        = var.vms_resources["db"].memory
+    core_fraction = var.vms_resources["db"].core_fraction
   }
   boot_disk {
     initialize_params {
       image_id = data.yandex_compute_image.ubuntu.image_id
+      size = var.vms_resources["db"].hdd_size
+      type = var.vms_resources["db"].hdd_type 
     }
   }
   scheduling_policy {
@@ -67,10 +75,12 @@ resource "yandex_compute_instance" "db" {
     subnet_id = yandex_vpc_subnet.db.id
     nat       = true
   }
-
   metadata = {
-    serial-port-enable = 1
-    ssh-keys           = "ubuntu:${var.vms_ssh_root_key}"
+    serial-port-enable = var.metadata["db"].serial-port-enable
+    ssh-keys           = var.metadata["db"].ssh-keys
+  #metadata = {
+  #  serial-port-enable = 1
+  #  ssh-keys           = "ubuntu:${var.vms_ssh_root_key}"
   }
 
 }
