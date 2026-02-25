@@ -56,6 +56,7 @@ resource "yandex_compute_instance" "db" {
   name        = local.vm_db_name
   platform_id = var.vm_db_platform
   zone = var.default_zone[1]
+  allow_stopping_for_update = true
   resources {
     cores         = var.vms_resources["db"].cores
     memory        = var.vms_resources["db"].memory
