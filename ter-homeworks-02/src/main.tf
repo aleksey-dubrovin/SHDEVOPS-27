@@ -42,15 +42,13 @@ resource "yandex_compute_instance" "platform" {
     nat       = true
   }
 
-  metadata = {
-    serial-port-enable = var.metadata["web"].serial-port-enable
-    ssh-keys           = var.metadata["web"].ssh-keys
+  metadata = var.metadata_map["metadata"]
   #metadata = {
   #  serial-port-enable = 1
   #  ssh-keys           = "ubuntu:${var.vms_ssh_root_key}"
   }
 
-}
+
 
 resource "yandex_compute_instance" "db" {
   name        = local.vm_db_name
@@ -76,12 +74,9 @@ resource "yandex_compute_instance" "db" {
     subnet_id = yandex_vpc_subnet.db.id
     nat       = true
   }
-  metadata = {
-    serial-port-enable = var.metadata["db"].serial-port-enable
-    ssh-keys           = var.metadata["db"].ssh-keys
   #metadata = {
   #  serial-port-enable = 1
   #  ssh-keys           = "ubuntu:${var.vms_ssh_root_key}"
-  }
-
+  #}
+  metadata = var.metadata_map["metadata"]
 }

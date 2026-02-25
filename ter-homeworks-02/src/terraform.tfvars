@@ -15,13 +15,9 @@ vms_resources = {
   }
 }
 
-metadata = {
-  web = {                        
-    serial-port-enable = 1
-    ssh-keys           = "ubuntu:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINw3xDSnJ8UJE0+yoOirH2XfeexyepJJzSIMNMuR37z2"
+metadata_map = {
+  "metadata" = {
+   serial-port-enable = 1
+   ssh-keys = "ubuntu:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINw3xDSnJ8UJE0+yoOirH2XfeexyepJJzSIMNMuR37z2 aleksey.vladch@yandex.ru"
   }
-  db = {                         
-    serial-port-enable = 1
-    ssh-keys           = "ubuntu:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINw3xDSnJ8UJE0+yoOirH2XfeexyepJJzSIMNMuR37z2"
-  }
-}
+} 
