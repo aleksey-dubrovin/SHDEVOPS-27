@@ -13,3 +13,5 @@
 [Terraform Best Practices](https://www.terraform-best-practices.com/)
 
 [Terraform Documentation](https://developer.hashicorp.com/terraform/docs)
+
+[Build, change, and destroy Docker infrastructure using Terraform](https://developer.hashicorp.com/terraform/tutorials/docker-get-started/infrastructure-as-code)
