@@ -30,3 +30,37 @@ variable "vpc_name" {
   default     = "develop"
   description = "VPC network&subnet name"
 }
+
+variable "vm_image" {
+  type = string
+  description = "идентификатор образа для ВМ"
+}
+variable "vm_web_platform" {
+  type = string
+  description = "https://yandex.cloud/ru/docs/compute/concepts/vm-platforms"
+}
+variable "vm_web_disk_size" {
+  type = number
+  description = "размер диска в ГБ"
+}
+variable "vm_web_disk_type" {
+  type = string
+  description = "тип создаваемого диска"
+}
+variable "each_vm" {
+  type = list(object({
+    vm_name     = string
+    cpu         = number
+    ram         = number
+    disk_volume = number
+    core_fraction = number
+    hdd_type = string
+  }))
+}
+variable "metadata_map" {
+type = map(object({
+serial-port-enable = number
+ssh-keys = string
+}))
+sensitive = true
+}
