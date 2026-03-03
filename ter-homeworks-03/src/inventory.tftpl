@@ -1,0 +1,14 @@
+[webservers]
+%{ for idx, name in web_names ~}
+${name} ansible_host=${web_ips[idx]} fqdn=${web_fqdns[idx]}
+%{ endfor ~}
+
+[databases]
+%{ for idx, name in db_names ~}
+%{ if name == "netology-develop-platform-db-main" }db-main%{ else }db-replica%{ endif } ansible_host=${db_ips[idx]} fqdn=${db_fqdns[idx]}
+%{ endfor ~}
+
+[storage]
+%{ for idx, name in storage_names ~}
+${name} ansible_host=${storage_ips[idx]} fqdn=${storage_fqdns[idx]}
+%{ endfor ~}

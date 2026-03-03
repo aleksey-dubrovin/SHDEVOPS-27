@@ -1,7 +1,7 @@
 resource "yandex_compute_disk" "vm_storage" {
   count = 3
-  name = "netology-develop-platform-vm_storage-${count.index+1}"
-  type = var.vm_storage_disk_type
+  name = "netology-${ var.vpc_name }-platform-vm_storage-${count.index+1}"
+  type = var.storage_vm_disk_type
   size = 1
 }
 
@@ -10,8 +10,9 @@ data "yandex_compute_image" "debian-storage" {
 }
 
 resource "yandex_compute_instance" "storage" {
-  name        = "netology-develop-platform-storage"
-  platform_id = var.vm_storage_platform
+  name        = var.storage_vm_name
+  hostname    = var.storage_vm_hostname
+  platform_id = var.storage_vm_platform
   
   resources {
     cores         = 2
@@ -42,5 +43,8 @@ resource "yandex_compute_instance" "storage" {
 
     metadata = {
      ssh-keys = "debian:${local.ssh_public_key}"
-}
+    }
+    labels = {
+     role = "storage"
+    }
 }

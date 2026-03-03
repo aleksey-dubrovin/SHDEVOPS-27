@@ -39,7 +39,15 @@ variable "vm_web_platform" {
   type = string
   description = "https://yandex.cloud/ru/docs/compute/concepts/vm-platforms"
 }
-variable "vm_storage_platform" {
+variable "storage_vm_name" {
+  type = string
+  description = "Название виртуальной машины для storage"
+}
+variable "storage_vm_hostname" {
+  type = string
+  description = "FQDN название хоста"
+}
+variable "storage_vm_platform" {
   type = string
   description = "https://yandex.cloud/ru/docs/compute/concepts/vm-platforms"
 }
@@ -51,13 +59,14 @@ variable "vm_web_disk_type" {
   type = string
   description = "тип создаваемого диска"
 }
-variable "vm_storage_disk_type" {
+variable "storage_vm_disk_type" {
   type = string
   description = "тип создаваемого диска"
 }
 variable "each_vm" {
   type = list(object({
     vm_name     = string
+    vm_hostname = string
     cpu         = number
     ram         = number
     disk_volume = number

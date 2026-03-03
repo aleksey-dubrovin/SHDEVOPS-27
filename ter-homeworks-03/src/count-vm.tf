@@ -4,7 +4,8 @@ data "yandex_compute_image" "debian-web" {
 
 resource "yandex_compute_instance" "web" {
   count = 2
-  name        = "netology-develop-platform-web-${count.index+1}"
+  name        = "netology-${ var.vpc_name }-platform-web-${count.index+1}"
+  hostname    = "web-${count.index + 1}"
   platform_id = var.vm_web_platform
   allow_stopping_for_update = true
 
@@ -33,4 +34,9 @@ resource "yandex_compute_instance" "web" {
   }
 
   metadata = var.metadata_map["metadata"]
+
+  labels = {
+    role = "web"
+    index = count.index + 1
+  }
 }

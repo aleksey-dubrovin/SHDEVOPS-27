@@ -7,6 +7,7 @@ resource "yandex_compute_instance" "db" {
     for vm in var.each_vm : vm.vm_name => vm
   }
   name        = each.value.vm_name
+  hostname    = each.value.vm_hostname
   platform_id = var.vm_web_platform
   allow_stopping_for_update = true
   resources {
@@ -34,4 +35,8 @@ resource "yandex_compute_instance" "db" {
   metadata = {
     ssh-keys = "debian:${local.ssh_public_key}"
 }
+  labels = {
+    role = "db"
+    type = each.value.vm_name == "netology-develop-platform-db-main" ? "main" : "replica"
+  }
 }
