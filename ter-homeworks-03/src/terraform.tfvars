@@ -2,6 +2,8 @@ vm_image = "fd8mor9qumsglk2a78fl"
 vm_web_platform = "standard-v3"
 vm_web_disk_size = 5
 vm_web_disk_type = "network-hdd"
+vm_storage_platform = "standard-v2"
+vm_storage_disk_type = "network-ssd"
 /* vms_map = {
   for vm in var.each_vm :
   vm.vm_name => vm

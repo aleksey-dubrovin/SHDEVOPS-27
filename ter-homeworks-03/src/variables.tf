@@ -39,11 +39,19 @@ variable "vm_web_platform" {
   type = string
   description = "https://yandex.cloud/ru/docs/compute/concepts/vm-platforms"
 }
+variable "vm_storage_platform" {
+  type = string
+  description = "https://yandex.cloud/ru/docs/compute/concepts/vm-platforms"
+}
 variable "vm_web_disk_size" {
   type = number
   description = "размер диска в ГБ"
 }
 variable "vm_web_disk_type" {
+  type = string
+  description = "тип создаваемого диска"
+}
+variable "vm_storage_disk_type" {
   type = string
   description = "тип создаваемого диска"
 }
