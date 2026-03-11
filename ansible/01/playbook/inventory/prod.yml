@@ -1,13 +1,42 @@
----
-  el:
-    hosts:
-      centos7:
-        ansible_connection: docker
-  deb:
-    hosts:
-      ubuntu:
-        ansible_connection: docker
-  local:
+all:
+  children:
+    # Дистрибутивы на базе DEB (Astra, Ubuntu, Debian)
+    deb_nodes:
+      hosts:
+        astra18:
+        ubuntu22:
+        debian12:
+      vars:
+        ansible_user: root
+
+    # Дистрибутивы на базе RPM (RedOS, Fedora, ROSA)
+    rpm_nodes:
+      hosts:
+        redos8:
+        fedora40:
+        rosa_fresh_13:
+      vars:
+        ansible_user: root
+
+    # Специфические дистрибутивы (ALT и Alpine)
+    alt_nodes:
+      hosts:
+        altp10:
+      vars:
+        ansible_user: root
+
+    alpine_nodes:
+      hosts:
+        alpine320:
+      vars:
+        ansible_user: root
+
+    # Ваша локальная машина
+    local:
       hosts:
         localhost:
           ansible_connection: local
+
+  vars:
+    # Глобальный параметр подключения для всех Docker-контейнеров
+    ansible_connection: docker

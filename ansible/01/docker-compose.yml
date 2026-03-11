@@ -1,0 +1,47 @@
+services:
+  # --- Astra Linux из официального реестра ---
+  astra:
+    image: registry.astralinux.ru/library/astra/ubi18:latest
+    container_name: astra18
+    # Используем apt-get, так как это Debian-based система
+    entrypoint: /bin/sh -c "apt-get update && apt-get install -y python3 && sleep infinity"
+
+  # --- Остальные дистрибутивы ---
+  debian:
+    image: debian:12
+    container_name: debian12
+    entrypoint: /bin/sh -c "apt-get update && apt-get install -y python3 && sleep infinity"
+  
+  ubuntu22:
+    image: ubuntu:22.04
+    container_name: ubuntu22
+    entrypoint: /bin/sh -c "apt-get update && apt-get install -y python3 && sleep infinity"
+  
+  fedora:
+    image: fedora:40
+    container_name: fedora40
+    entrypoint: /bin/sh -c "dnf install -y python3 && sleep infinity"
+
+  alpine:
+    image: alpine:3.20
+    container_name: alpine320
+    entrypoint: /bin/sh -c "apk add --no-cache python3 && sleep infinity"
+
+  altlinux:
+    image: alt:p10
+    container_name: altp10
+    entrypoint: /bin/sh -c "apt-get update && apt-get install -y python3 && sleep infinity"
+
+  redos:
+    image: registry.red-soft.ru/ubi8/ubi:latest
+    container_name: redos8
+    entrypoint: /bin/sh -c "dnf install -y python3 && sleep infinity"
+
+  rosa:
+    image: rosalab/rosa13:latest
+    container_name: rosa_fresh_13
+    entrypoint: /bin/sh -c "dnf install -y python3 && sleep infinity"
+
+networks:
+  default:
+    name: ansible_network
