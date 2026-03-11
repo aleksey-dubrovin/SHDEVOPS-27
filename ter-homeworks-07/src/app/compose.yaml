@@ -1,0 +1,30 @@
+include:
+  - proxy.yaml
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    container_name: web
+    env_file: .env
+    environment:
+      - DB_HOST=db
+      - DB_USER=${MYSQL_USER} 
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+      - DB_NAME=${MYSQL_DATABASE}    
+    networks:
+      backend:
+        ipv4_address: 172.20.0.5
+    restart: always
+     
+  db:
+    image: mysql:8
+    container_name: db
+    env_file: .env
+    networks: 
+      backend:
+        ipv4_address: 172.20.0.10
+    environment:
+      - MYSQL_ROOT_HOST="%" # <--- Это вам обязательно понадобится при выполнении ДЗ!
+    restart: on-failure

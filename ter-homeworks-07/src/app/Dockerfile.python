@@ -1,0 +1,13 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Копируем и устанавливаем зависимости
+COPY . .
+RUN pip install -r requirements.txt
+
+# Открываем порт
+EXPOSE 5000
+
+# Команда по умолчанию
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5000"]

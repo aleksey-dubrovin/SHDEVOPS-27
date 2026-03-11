@@ -1,0 +1,35 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+
+packages:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - software-properties-common
+  - git
+
+runcmd:
+  # Установка Docker
+  - curl -fsSL https://get.docker.com -o get-docker.sh
+  - sh get-docker.sh
+  
+  # Установка Docker Compose
+  - curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  - chmod +x /usr/local/bin/docker-compose
+  
+  # Добавление пользователя в группу docker
+  - usermod -aG docker ubuntu
+  
+  # Создание директории для приложения
+  - mkdir -p /opt/app
+  
+  # Клонирование репозитория с приложением
+  - git clone https://github.com/netology-code/shvirtd-example-python.git /opt/app
+  
+  # Создание docker-compose.yml (заполним позже через Terraform)
+  
+  # Запуск приложения (будет выполнено после создания docker-compose.yml)
+  - cd /opt/app && docker-compose up -d
+
+final_message: "Docker and Docker Compose installed successfully after $UPTIME seconds"
