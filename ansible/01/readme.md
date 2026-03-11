@@ -60,3 +60,6 @@ ansible-doc -t connection -l
 ansible-doc -t connection local
 ansible-doc -t connection docker
 ```
+
+### Необязательная часть
+
