@@ -20,5 +20,5 @@
 
 ### 1. Клонирование репозитория
 ```bash
-git clone <your-repo-url>
+git clone 
 cd project
