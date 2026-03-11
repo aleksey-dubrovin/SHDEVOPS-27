@@ -8,6 +8,7 @@ packages:
   - curl
   - software-properties-common
   - git
+  - python3-pip
 
 runcmd:
   # Установка Docker
@@ -27,9 +28,17 @@ runcmd:
   # Клонирование репозитория с приложением
   - git clone https://github.com/netology-code/shvirtd-example-python.git /opt/app
   
-  # Создание docker-compose.yml (заполним позже через Terraform)
+  # Создание .env файла с переменными для подключения к БД
+  - echo "DB_HOST=${mysql_host}" > /opt/app/.env
+  - echo "DB_USER=${mysql_user}" >> /opt/app/.env
+  - echo "DB_PASSWORD=${mysql_password}" >> /opt/app/.env
+  - echo "DB_NAME=${mysql_database}" >> /opt/app/.env
+  - echo "DB_PORT=3306" >> /opt/app/.env
   
-  # Запуск приложения (будет выполнено после создания docker-compose.yml)
+  # Копирование docker-compose.yml из папки app если нужно
+  - cp /opt/app/docker-compose.yml /opt/app/docker-compose.yml.bak 2>/dev/null || true
+  
+  # Запуск приложения
   - cd /opt/app && docker-compose up -d
 
 final_message: "Docker and Docker Compose installed successfully after $UPTIME seconds"

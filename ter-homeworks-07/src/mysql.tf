@@ -7,16 +7,15 @@ resource "yandex_mdb_mysql_cluster" "app_mysql" {
   security_group_ids  = [yandex_vpc_security_group.mysql_sg.id]
 
   resources {
-    resource_preset_id = "b2.nano"  # 2 CPU, 2 RAM
+    resource_preset_id = "s2.micro"  # 2 vCPU, 8 GB RAM
     disk_type_id       = "network-ssd"
-    disk_size          = 10          # 10 GB
+    disk_size          = 10
   }
 
-  # Добавляем host блок (обязательно для MySQL кластера)
   host {
     zone      = "ru-central1-a"
     subnet_id = yandex_vpc_subnet.app_subnet.id
-    assign_public_ip = false  # Без публичного IP для безопасности
+    assign_public_ip = false
   }
 }
 
