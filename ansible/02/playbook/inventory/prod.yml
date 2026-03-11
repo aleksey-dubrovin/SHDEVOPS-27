@@ -1,0 +1,14 @@
+---
+clickhouse:
+  hosts:
+    clickhouse-01:
+      ansible_host: redos8
+      ansible_connection: docker
+      ansible_user: root
+      # ansible_host: <IP_here>
+vector:
+  hosts:
+    vector-01:
+      ansible_host: redos8
+      ansible_connection: docker
+      ansible_user: root

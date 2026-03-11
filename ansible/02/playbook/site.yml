@@ -1,0 +1,77 @@
+---
+- name: Install Clickhouse
+  hosts: clickhouse
+  handlers:
+    - name: Start clickhouse service
+      become: true
+      ansible.builtin.service:
+        name: clickhouse-server
+        state: restarted
+  tasks:
+    - block:
+        - name: Get clickhouse distrib
+          ansible.builtin.get_url:
+            url: "https://packages.clickhouse.com/rpm/stable/{{ item }}-{{ clickhouse_version }}.noarch.rpm"
+            dest: "./{{ item }}-{{ clickhouse_version }}.rpm"
+          with_items: "{{ clickhouse_packages }}"
+      rescue:
+        - name: Get clickhouse distrib
+          ansible.builtin.get_url:
+            url: "https://packages.clickhouse.com/rpm/stable/clickhouse-common-static-{{ clickhouse_version }}.x86_64.rpm"
+            dest: "./clickhouse-common-static-{{ clickhouse_version }}.rpm"
+    - name: Install clickhouse packages
+      become: true
+      ansible.builtin.yum:
+        disable_gpg_check: true
+        name:
+          - clickhouse-common-static-{{ clickhouse_version }}.rpm
+          - clickhouse-client-{{ clickhouse_version }}.rpm
+          - clickhouse-server-{{ clickhouse_version }}.rpm
+      notify: Start clickhouse service
+    - name: Flush handlers
+      meta: flush_handlers
+    - name: Create database
+      ansible.builtin.command: "clickhouse-client -q 'create database logs;'"
+      register: create_db
+      failed_when: create_db.rc != 0 and create_db.rc !=82
+      changed_when: create_db.rc == 0
+
+- name: Install and configure Vector
+  hosts: vector
+  vars:
+    vector_version: "0.34.1"
+    vector_dir: "/opt/vector"
+  tasks:
+    - name: Create Vector directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - "{{ vector_dir }}"
+        - "/etc/vector"
+
+    - name: Download and Unarchive Vector
+      ansible.builtin.unarchive:
+        # Используем x86_64-unknown-linux-musl для совместимости
+        src: "https://packages.timber.io{{ vector_version }}/vector-{{ vector_version }}-x86_64-unknown-linux-musl.tar.gz"
+        dest: "{{ vector_dir }}"
+        remote_src: true
+        extra_opts: [--strip-components=2] # Извлекаем бинарник сразу в /opt/vector/bin
+
+    - name: Create symlink to binary
+      ansible.builtin.file:
+        src: "{{ vector_dir }}/bin/vector"
+        dest: "/usr/local/bin/vector"
+        state: link
+
+    - name: Deploy Vector configuration
+      ansible.builtin.template:
+        src: vector.yaml.j2
+        dest: /etc/vector/vector.yaml
+        mode: '0644'
+      notify: Validate Vector config
+
+  handlers:
+    - name: Validate Vector config
+      ansible.builtin.command: "vector validate --config /etc/vector/vector.yaml"

@@ -1,0 +1,15 @@
+data_dir: /var/lib/vector
+
+sources:
+  dummy_logs:
+    type: demo_logs
+    format: json
+    interval: 1.0
+
+sinks:
+  out_console:
+    type: console
+    inputs: [dummy_logs]
+    target: stdout
+    encoding:
+      codec: json
