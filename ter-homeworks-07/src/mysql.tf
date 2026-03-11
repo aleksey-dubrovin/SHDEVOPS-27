@@ -11,6 +11,13 @@ resource "yandex_mdb_mysql_cluster" "app_mysql" {
     disk_type_id       = "network-ssd"
     disk_size          = 10          # 10 GB
   }
+
+  # Добавляем host блок (обязательно для MySQL кластера)
+  host {
+    zone      = "ru-central1-a"
+    subnet_id = yandex_vpc_subnet.app_subnet.id
+    assign_public_ip = false  # Без публичного IP для безопасности
+  }
 }
 
 # База данных

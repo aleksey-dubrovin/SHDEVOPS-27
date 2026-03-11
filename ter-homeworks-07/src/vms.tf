@@ -1,6 +1,6 @@
 # Данные для cloud-init
 data "template_file" "cloud_init" {
-  template = file("../cloud-init/docker-init.yaml")
+  template = file("cloud-init/docker-init.yaml")
 }
 
 # Первая виртуальная машина
