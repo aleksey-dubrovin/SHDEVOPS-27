@@ -1,5 +1,7 @@
 # Итоговый проект: Развертывание web-приложения в Yandex Cloud
 
+[Запуск Docker-образа на виртуальной машине с помощью Terraform](https://yandex.cloud/ru/docs/tutorials/infrastructure-management/run-docker-on-vm/terraform)
+
 ## Описание проекта
 Развертывание Python web-приложения в Yandex Cloud с использованием Terraform, Docker и managed MySQL.
 
