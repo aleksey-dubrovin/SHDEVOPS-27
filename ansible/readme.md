@@ -52,4 +52,6 @@
 ## Дополнительные материалы к лекциям
 
 1. [Дополнительные материалы к лекциям по Ansible](./08-ansible-additional).
-1. [Дополнительные материалы к лекциям по CI\CD](./09-ci-additional).
+2. [Дополнительные материалы к лекциям по CI\CD](./09-ci-additional).
+3. [Community General Collection](https://github.com/st8f/community.general/blob/yc_compute/README.md)
+4. [Cloud modules](https://docs.ansible.com/projects/ansible/2.9/modules/list_of_cloud_modules.html)
