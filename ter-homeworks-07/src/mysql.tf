@@ -2,19 +2,19 @@
 resource "yandex_mdb_mysql_cluster" "app_mysql" {
   name                = "app-mysql"
   environment         = "PRODUCTION"
-  network_id          = yandex_vpc_network.app_network.id
+  network_id          = data.yandex_vpc_network.existing_network.id
   version             = "8.0"
   security_group_ids  = [yandex_vpc_security_group.mysql_sg.id]
 
   resources {
-    resource_preset_id = "s2.micro"  # 2 vCPU, 8 GB RAM
+    resource_preset_id = "s2.micro"
     disk_type_id       = "network-ssd"
     disk_size          = 10
   }
 
   host {
-    zone      = "ru-central1-a"
-    subnet_id = yandex_vpc_subnet.app_subnet.id
+    zone             = "ru-central1-a"
+    subnet_id        = yandex_vpc_subnet.app_subnet.id
     assign_public_ip = false
   }
 }
