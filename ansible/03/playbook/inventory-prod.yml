@@ -1,0 +1,24 @@
+---
+clickhouse:
+  hosts:
+    clickhouse-01:
+      ansible_host: 89.169.157.152
+      ansible_user: rocky
+      ansible_ssh_private_key_file: ~/.ssh/aleksey
+      ansible_become: true
+
+vector:
+  hosts:
+    vector-01:
+      ansible_host: 84.252.128.168
+      ansible_user: rocky
+      ansible_ssh_private_key_file: ~/.ssh/aleksey
+      ansible_become: true
+
+lighthouse:
+  hosts:
+    lighthouse-01:
+      ansible_host: 158.160.35.240
+      ansible_user: rocky
+      ansible_ssh_private_key_file: ~/.ssh/aleksey
+      ansible_become: true

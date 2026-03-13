@@ -1,0 +1,138 @@
+---
+- name: Создание сети и подсети в Яндекс.Облаке
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    network_name: "logs-platform-network"
+    subnet_name: "public-subnet"
+    subnet_cidr: "192.168.72.0/24"
+  
+  tasks:
+    - name: Установка зависимостей
+      pip:
+        name:
+          - git+https://github.com/yandex-cloud/python-sdk
+        state: present
+      changed_when: false
+
+    - name: Поиск существующей сети
+      command: >
+        yc vpc network get {{ network_name }}
+        --folder-id {{ yc_folder_id }}
+        
+      register: network_check
+      failed_when: false
+      changed_when: false
+
+    - name: Создание сети
+      command: >
+        yc vpc network create {{ network_name }}
+        --folder-id {{ yc_folder_id }}
+        
+        --description "Network for logs platform"
+        --labels project=logs-platform
+      when: network_check.rc != 0
+      register: network_create
+      changed_when: network_create.rc == 0
+
+    - name: Получение ID созданной сети
+      command: >
+        yc vpc network get {{ network_name }}
+        --folder-id {{ yc_folder_id }}
+        
+        --format json
+      register: network_info
+      changed_when: false
+
+    - name: Сохранение ID сети
+      set_fact:
+        network_id: "{{ (network_info.stdout | from_json).id }}"
+
+    - name: Поиск существующей подсети
+      command: >
+        yc vpc subnet get {{ subnet_name }}
+        --folder-id {{ yc_folder_id }}
+        
+      register: subnet_check
+      failed_when: false
+      changed_when: false
+
+    - name: Создание подсети
+      command: >
+        yc vpc subnet create {{ subnet_name }}
+        --folder-id {{ yc_folder_id }}
+        
+        --network-id {{ network_id }}
+        --zone {{ yc_zone }}
+        --range {{ subnet_cidr }}
+        --description "Public subnet for VMs"
+      when: subnet_check.rc != 0
+      register: subnet_create
+      changed_when: subnet_create.rc == 0
+
+    - name: Получение ID подсети
+      command: >
+        yc vpc subnet get {{ subnet_name }}
+        --folder-id {{ yc_folder_id }}
+        
+        --format json
+      register: subnet_info
+      changed_when: false
+
+    - name: Сохранение ID подсети
+      set_fact:
+        subnet_id: "{{ (subnet_info.stdout | from_json).id }}"
+
+    - name: Создание групп безопасности
+      block:
+        - name: Создание группы безопасности для ClickHouse
+          command: >
+            yc vpc security-group create clickhouse-sg
+            --folder-id {{ yc_folder_id }}
+            
+            --network-id {{ network_id }}
+            --description "Security group for ClickHouse"
+            --rule "direction=ingress,protocol=tcp,port=22,v4-cidr=[0.0.0.0/0]"
+            --rule "direction=ingress,protocol=tcp,port=8123,v4-cidr=[0.0.0.0/0]"
+            --rule "direction=ingress,protocol=tcp,port=9000,v4-cidr=[0.0.0.0/0]"
+            --rule "direction=ingress,protocol=tcp,port=9009,v4-cidr=[{{ subnet_cidr }}]"
+          register: sg_clickhouse
+          failed_when: false
+
+        - name: Создание группы безопасности для Vector
+          command: >
+            yc vpc security-group create vector-sg
+            --folder-id {{ yc_folder_id }}
+            
+            --network-id {{ network_id }}
+            --description "Security group for Vector"
+            --rule "direction=ingress,protocol=tcp,port=22,v4-cidr=[0.0.0.0/0]"
+          register: sg_vector
+          failed_when: false
+
+        - name: Создание группы безопасности для Lighthouse
+          command: >
+            yc vpc security-group create lighthouse-sg
+            --folder-id {{ yc_folder_id }}
+            
+            --network-id {{ network_id }}
+            --description "Security group for Lighthouse"
+            --rule "direction=ingress,protocol=tcp,port=22,v4-cidr=[0.0.0.0/0]"
+            --rule "direction=ingress,protocol=tcp,port=80,v4-cidr=[0.0.0.0/0]"
+          register: sg_lighthouse
+          failed_when: false
+
+    - name: Сохранение результатов
+      copy:
+        content: |
+          network_id: {{ network_id }}
+          subnet_id: {{ subnet_id }}
+        dest: "{{ playbook_dir }}/../.yc_infra.yml"
+      changed_when: false
+
+    - name: Вывод информации
+      debug:
+        msg:
+          - "Сеть создана: {{ network_name }} (ID: {{ network_id }})"
+          - "Подсеть создана: {{ subnet_name }} (ID: {{ subnet_id }})"

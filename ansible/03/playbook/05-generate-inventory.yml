@@ -1,0 +1,63 @@
+---
+- name: Генерация inventory файла
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files:
+    - group_vars/all.yml
+  
+  tasks:
+    - name: Загрузка IP адресов
+      include_vars:
+        file: "{{ item }}"
+      loop:
+        - .clickhouse_ip.yml
+        - .vector_ip.yml
+        - .lighthouse_ip.yml
+      ignore_errors: true
+
+    - name: Проверка наличия всех IP
+      fail:
+        msg: "Не найдены IP адреса для всех серверов. Запустите сначала плейбуки 02, 03, 04."
+      when: >
+        clickhouse_ip is not defined or
+        vector_ip is not defined or
+        lighthouse_ip is not defined
+
+    - name: Создание inventory файла
+      copy:
+        content: |
+          ---
+          clickhouse:
+            hosts:
+              clickhouse-01:
+                ansible_host: {{ clickhouse_ip }}
+                ansible_user: {{ vm_user }}
+                ansible_ssh_private_key_file: ~/.ssh/aleksey
+                ansible_become: true
+
+          vector:
+            hosts:
+              vector-01:
+                ansible_host: {{ vector_ip }}
+                ansible_user: {{ vm_user }}
+                ansible_ssh_private_key_file: ~/.ssh/aleksey
+                ansible_become: true
+
+          lighthouse:
+            hosts:
+              lighthouse-01:
+                ansible_host: {{ lighthouse_ip }}
+                ansible_user: {{ vm_user }}
+                ansible_ssh_private_key_file: ~/.ssh/aleksey
+                ansible_become: true
+        dest: inventory-prod.yml
+      changed_when: false
+
+    - name: Вывод информации
+      debug:
+        msg:
+          - "Inventory файл создан: inventory-prod.yml"
+          - "ClickHouse: {{ clickhouse_ip }}"
+          - "Vector: {{ vector_ip }}"
+          - "Lighthouse: {{ lighthouse_ip }}"

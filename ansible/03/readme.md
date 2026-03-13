@@ -7,11 +7,16 @@
 
 ### Подготовка к выполнению
 
-1. 
-2. 
-3. 
+![alt text](image.png)
 
 ### Основная часть
+
+1. 
+
+![alt text](image-1.png)
+
+2. 
+
 
 
 # Ansible Playbook для развертывания стека ClickHouse + Vector + Lighthouse

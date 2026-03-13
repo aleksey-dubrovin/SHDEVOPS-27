@@ -1,0 +1,2 @@
+git+https://github.com/yandex-cloud/python-sdk
+ansible>=2.14

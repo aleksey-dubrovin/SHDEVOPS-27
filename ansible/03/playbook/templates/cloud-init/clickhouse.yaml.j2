@@ -1,0 +1,39 @@
+#cloud-config
+users:
+  - name: {{ vm_user }}
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - {{ vm_ssh_key }}
+
+package_update: true
+package_upgrade: true
+
+packages:
+  - curl
+  - wget
+  - vim
+  - net-tools
+  - python3
+  - policycoreutils-python-utils
+  - firewalld
+
+write_files:
+  - path: /etc/motd
+    content: |
+      ==============================================
+      ClickHouse Server
+      Версия: {{ clickhouse_version }}
+      База данных: {{ clickhouse_database }}
+      ==============================================
+
+runcmd:
+  - hostnamectl set-hostname clickhouse-01
+  - systemctl enable --now firewalld
+  - firewall-cmd --permanent --add-service=ssh
+  - firewall-cmd --permanent --add-port=8123/tcp
+  - firewall-cmd --permanent --add-port=9000/tcp
+  - firewall-cmd --reload
+  - setenforce 0
+  - sed -i 's/^SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
+  - timedatectl set-timezone Europe/Moscow

@@ -1,0 +1,109 @@
+---
+- name: Создание и настройка Lighthouse сервера
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files:
+    - group_vars/all.yml
+  
+  tasks:
+    - name: Получение ID подсети
+      command: >
+        yc vpc subnet get public-subnet
+        --folder-id {{ yc_folder_id }}
+        --format json
+      register: subnet_info
+      changed_when: false
+      environment:
+        YC_TOKEN: "{{ yc_token }}"
+
+    - name: Установка ID подсети
+      set_fact:
+        subnet_id: "{{ (subnet_info.stdout | from_json).id }}"
+
+    - name: Получение последнего образа Rocky Linux
+      command: >
+        yc compute image get-latest-from-family rocky-9-oslogin
+        --folder-id standard-images
+        --format json
+      register: rocky_image
+      changed_when: false
+      environment:
+        YC_TOKEN: "{{ yc_token }}"
+
+    - name: Установка ID образа
+      set_fact:
+        rocky_image_id: "{{ (rocky_image.stdout | from_json).id }}"
+
+    - name: Получение информации о Lighthouse VM
+      shell: |
+        yc compute instance get lighthouse-01 \
+          --folder-id {{ yc_folder_id }} \
+          --format json
+      environment:
+        YC_TOKEN: "{{ yc_token }}"
+      register: lighthouse_vm_get
+      args:
+        executable: /bin/bash
+      ignore_errors: true
+
+    - name: Создание Lighthouse VM если не существует
+      shell: |
+        yc compute instance create lighthouse-01 \
+          --folder-id {{ yc_folder_id }} \
+          --zone {{ yc_zone }} \
+          --platform standard-v3 \
+          --cores 2 \
+          --memory 4 \
+          --core-fraction 100 \
+          --create-boot-disk name=lighthouse-boot,size=20,type=network-ssd,image-id={{ rocky_image_id }} \
+          --network-interface subnet-id={{ subnet_id }},nat-ip-version=ipv4 \
+          --metadata-from-file user-data=templates/cloud-init/lighthouse.yaml.j2 \
+          --metadata ssh-keys="rocky:{{ lookup('file', '~/.ssh/aleksey.pub') }}" \
+          --format json
+      environment:
+        YC_TOKEN: "{{ yc_token }}"
+      register: lighthouse_vm_create
+      args:
+        executable: /bin/bash
+      when: lighthouse_vm_get is failed
+
+    - name: Установка переменной с результатом
+      set_fact:
+        vm_data: "{{ lighthouse_vm_get.stdout if lighthouse_vm_get is success else lighthouse_vm_create.stdout }}"
+
+    - name: Извлечение информации о ВМ
+      set_fact:
+        vm_info: "{{ vm_data | from_json }}"
+
+    - name: Вывод информации
+      debug:
+        msg:
+          - "Lighthouse VM: {{ vm_info.id }}"
+          - "Публичный IP: {{ vm_info.network_interfaces[0].primary_v4_address.one_to_one_nat.address }}"
+          - "Приватный IP: {{ vm_info.network_interfaces[0].primary_v4_address.address }}"
+
+    - name: Добавление хоста в инвентарь
+      add_host:
+        name: lighthouse-01
+        ansible_host: "{{ vm_info.network_interfaces[0].primary_v4_address.one_to_one_nat.address }}"
+        ansible_user: "{{ vm_user }}"
+        ansible_private_key_file: "~/.ssh/aleksey"
+        ansible_become: true
+        group: lighthouse
+
+    - name: Сохранение IP в файл
+      copy:
+        content: |
+          lighthouse_ip: {{ vm_info.network_interfaces[0].primary_v4_address.one_to_one_nat.address }}
+          lighthouse_private_ip: {{ vm_info.network_interfaces[0].primary_v4_address.address }}
+        dest: .lighthouse_ip.yml
+      changed_when: false
+
+    - name: Ожидание доступности SSH
+      wait_for:
+        host: "{{ vm_info.network_interfaces[0].primary_v4_address.one_to_one_nat.address }}"
+        port: 22
+        delay: 10
+        timeout: 300
+      when: lighthouse_vm_create is changed

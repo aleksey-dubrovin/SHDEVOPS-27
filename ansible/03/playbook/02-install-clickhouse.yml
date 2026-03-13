@@ -1,0 +1,73 @@
+---
+- name: Создание и настройка ClickHouse сервера
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files:
+    - group_vars/all.yml
+  
+  tasks:
+    - name: Получение информации о ClickHouse VM
+      shell: |
+        yc compute instance get clickhouse-01 \
+          --folder-id {{ yc_folder_id }} \
+          --format json
+      environment:
+        YC_TOKEN: "{{ yc_token }}"
+      register: clickhouse_vm_get
+      args:
+        executable: /bin/bash
+      ignore_errors: true
+
+    - name: Создание ClickHouse VM если не существует
+      shell: |
+        yc compute instance create clickhouse-01 \
+          --folder-id {{ yc_folder_id }} \
+          --zone {{ yc_zone }} \
+          --platform standard-v3 \
+          --cores 4 \
+          --memory 8 \
+          --core-fraction 100 \
+          --create-boot-disk name=clickhouse-boot,size=30,type=network-ssd,image-id=fd8ssol8bcsl95li2rtv \
+          --network-interface subnet-id=e9budcips0vuf11pdu5v,nat-ip-version=ipv4 \
+          --metadata-from-file user-data=templates/cloud-init/clickhouse.yaml.j2 \
+          --metadata ssh-keys="rocky:{{ lookup('file', '~/.ssh/aleksey.pub') }}" \
+          --format json
+      environment:
+        YC_TOKEN: "{{ yc_token }}"
+      register: clickhouse_vm_create
+      args:
+        executable: /bin/bash
+      when: clickhouse_vm_get is failed
+
+    - name: Установка переменной с результатом
+      set_fact:
+        vm_data: "{{ clickhouse_vm_get.stdout if clickhouse_vm_get is success else clickhouse_vm_create.stdout }}"
+
+    - name: Извлечение информации о ВМ
+      set_fact:
+        vm_info: "{{ vm_data | from_json }}"
+
+    - name: Вывод информации
+      debug:
+        msg:
+          - "ClickHouse VM: {{ vm_info.id }}"
+          - "Публичный IP: {{ vm_info.network_interfaces[0].primary_v4_address.one_to_one_nat.address }}"
+          - "Приватный IP: {{ vm_info.network_interfaces[0].primary_v4_address.address }}"
+
+    - name: Добавление хоста в инвентарь
+      add_host:
+        name: clickhouse-01
+        ansible_host: "{{ vm_info.network_interfaces[0].primary_v4_address.one_to_one_nat.address }}"
+        ansible_user: "{{ vm_user }}"
+        ansible_private_key_file: "~/.ssh/aleksey"
+        ansible_become: true
+        group: clickhouse
+
+    - name: Сохранение IP в файл
+      copy:
+        content: |
+          clickhouse_ip: {{ vm_info.network_interfaces[0].primary_v4_address.one_to_one_nat.address }}
+          clickhouse_private_ip: {{ vm_info.network_interfaces[0].primary_v4_address.address }}
+        dest: .clickhouse_ip.yml
+      changed_when: false
