@@ -5,10 +5,9 @@
   gather_facts: false
   vars_files:
     - group_vars/all.yml
-  
   tasks:
     - name: Получение ID подсети
-      command: >
+      ansible.builtin.command: >
         yc vpc subnet get public-subnet
         --folder-id {{ yc_folder_id }}
         --format json
@@ -18,11 +17,11 @@
         YC_TOKEN: "{{ yc_token }}"
 
     - name: Установка ID подсети
-      set_fact:
+      ansible.builtin.set_fact:
         subnet_id: "{{ (subnet_info.stdout | from_json).id }}"
 
     - name: Получение последнего образа Rocky Linux
-      command: >
+      ansible.builtin.command: >
         yc compute image get-latest-from-family rocky-9-oslogin
         --folder-id standard-images
         --format json
@@ -32,11 +31,11 @@
         YC_TOKEN: "{{ yc_token }}"
 
     - name: Установка ID образа
-      set_fact:
+      ansible.builtin.set_fact:
         rocky_image_id: "{{ (rocky_image.stdout | from_json).id }}"
 
     - name: Получение информации о Lighthouse VM
-      shell: |
+      ansible.builtin.shell: |
         yc compute instance get lighthouse-01 \
           --folder-id {{ yc_folder_id }} \
           --format json
@@ -48,7 +47,7 @@
       ignore_errors: true
 
     - name: Создание Lighthouse VM если не существует
-      shell: |
+      ansible.builtin.shell: |
         yc compute instance create lighthouse-01 \
           --folder-id {{ yc_folder_id }} \
           --zone {{ yc_zone }} \
@@ -69,22 +68,22 @@
       when: lighthouse_vm_get is failed
 
     - name: Установка переменной с результатом
-      set_fact:
+      ansible.builtin.set_fact:
         vm_data: "{{ lighthouse_vm_get.stdout if lighthouse_vm_get is success else lighthouse_vm_create.stdout }}"
 
     - name: Извлечение информации о ВМ
-      set_fact:
+      ansible.builtin.set_fact:
         vm_info: "{{ vm_data | from_json }}"
 
     - name: Вывод информации
-      debug:
+      ansible.builtin.debug:
         msg:
           - "Lighthouse VM: {{ vm_info.id }}"
           - "Публичный IP: {{ vm_info.network_interfaces[0].primary_v4_address.one_to_one_nat.address }}"
           - "Приватный IP: {{ vm_info.network_interfaces[0].primary_v4_address.address }}"
 
     - name: Добавление хоста в инвентарь
-      add_host:
+      ansible.builtin.add_host:
         name: lighthouse-01
         ansible_host: "{{ vm_info.network_interfaces[0].primary_v4_address.one_to_one_nat.address }}"
         ansible_user: "{{ vm_user }}"
@@ -93,7 +92,7 @@
         group: lighthouse
 
     - name: Сохранение IP в файл
-      copy:
+      ansible.builtin.copy:
         content: |
           lighthouse_ip: {{ vm_info.network_interfaces[0].primary_v4_address.one_to_one_nat.address }}
           lighthouse_private_ip: {{ vm_info.network_interfaces[0].primary_v4_address.address }}
@@ -101,7 +100,7 @@
       changed_when: false
 
     - name: Ожидание доступности SSH
-      wait_for:
+      ansible.builtin.wait_for:
         host: "{{ vm_info.network_interfaces[0].primary_v4_address.one_to_one_nat.address }}"
         port: 22
         delay: 10

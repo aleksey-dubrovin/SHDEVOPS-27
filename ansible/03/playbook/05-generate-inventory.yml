@@ -5,10 +5,9 @@
   gather_facts: false
   vars_files:
     - group_vars/all.yml
-  
   tasks:
     - name: Загрузка IP адресов
-      include_vars:
+      ansible.builtin.include_vars:
         file: "{{ item }}"
       loop:
         - .clickhouse_ip.yml
@@ -17,7 +16,7 @@
       ignore_errors: true
 
     - name: Проверка наличия всех IP
-      fail:
+      ansible.builtin.fail:
         msg: "Не найдены IP адреса для всех серверов. Запустите сначала плейбуки 02, 03, 04."
       when: >
         clickhouse_ip is not defined or
@@ -25,7 +24,7 @@
         lighthouse_ip is not defined
 
     - name: Создание inventory файла
-      copy:
+      ansible.builtin.copy:
         content: |
           ---
           clickhouse:
@@ -55,7 +54,7 @@
       changed_when: false
 
     - name: Вывод информации
-      debug:
+      ansible.builtin.debug:
         msg:
           - "Inventory файл создан: inventory-prod.yml"
           - "ClickHouse: {{ clickhouse_ip }}"

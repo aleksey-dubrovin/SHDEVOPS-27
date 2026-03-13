@@ -1,0 +1,24 @@
+---
+# Яндекс.Облако параметры
+yc_token: "{{ lookup('env', 'YC_TOKEN') }}"
+yc_folder_id: "{{ lookup('env', 'YC_FOLDER_ID') }}"
+yc_zone: "ru-central1-a"
+yc_subnet_id: "{{ lookup('env', 'YC_SUBNET_ID') | default('', true) }}"
+
+# Общие параметры ВМ
+vm_user: rocky
+vm_ssh_key: "{{ lookup('file', '/home/aleksey/.ssh/id_rsa.pub') }}"
+
+# Версии ПО
+clickhouse_version: "24.8.2.3"
+vector_version: "0.21.0"
+
+# ClickHouse параметры
+clickhouse_database: logs
+clickhouse_packages:
+  - clickhouse-common-static-{{ clickhouse_version }}.x86_64.rpm
+  - clickhouse-client-{{ clickhouse_version }}.x86_64.rpm
+  - clickhouse-server-{{ clickhouse_version }}.x86_64.rpm
+
+# ClickHouse IP (будет заполнено после создания)
+clickhouse_ip: "{{ hostvars['clickhouse-01']['ansible_default_ipv4']['address'] | default('') }}"
