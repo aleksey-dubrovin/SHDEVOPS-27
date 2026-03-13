@@ -1,0 +1,17 @@
+plugin: community.general.yc_compute
+folders:
+  - <ID_вашей_папки_в_яндекс_облаке>  # Укажите ваш folder-id
+auth_kind: serviceaccountfile
+service_account_file: /path/to/your/sa-key.json # Укажите путь до ключа сервисного аккаунта
+hostnames:
+  - name  # Использовать имя ВМ как имя хоста в инвентаре
+filters:
+  - status == 'RUNNING'
+compose:
+  # Устанавливаем ansible_host в публичный IP для подключения
+  ansible_host: network_interfaces[0].primary_v4_address.one_to_one_nat.address
+keyed_groups:
+  # Группируем хосты по метке yc_GROUP (которую вы зададите при создании ВМ)
+  - key: labels['group']
+    prefix: ''
+    separator: ''

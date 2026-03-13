@@ -1,0 +1,12 @@
+---
+clickhouse_version: "24.8.2.3"
+clickhouse_packages:
+  - clickhouse-common-static-24.8.2.3.x86_64.rpm
+  - clickhouse-client-24.8.2.3.x86_64.rpm
+  - clickhouse-server-24.8.2.3.x86_64.rpm
+clickhouse_database: logs
+clickhouse_config_path: /etc/clickhouse-server/config.xml
+clickhouse_user: clickhouse
+clickhouse_group: clickhouse
+clickhouse_data_path: /var/lib/clickhouse
+clickhouse_log_path: /var/log/clickhouse-server

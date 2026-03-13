@@ -1,0 +1,26 @@
+#cloud-config
+users:
+  - name: rocky
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - ${ssh_public_key}
+
+package_update: true
+packages:
+  - iptables-services
+  - iptables-utils
+
+runcmd:
+  # Включение IP forwarding
+  - sysctl -w net.ipv4.ip_forward=1
+  - echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
+  
+  # Настройка NAT
+  - iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+  - iptables-save > /etc/sysconfig/iptables
+  - systemctl enable iptables
+  - systemctl start iptables
+  
+  # Настройка hostname
+  - hostnamectl set-hostname nat-instance

@@ -1,0 +1,43 @@
+---
+vector_version: "0.21.0"
+vector_config_path: /etc/vector/vector.yaml
+vector_data_dir: /var/lib/vector
+vector_config:
+  sources:
+    local_logs:
+      type: file
+      include:
+        - /var/log/*.log
+        - /var/log/messages
+      read_from: beginning
+      ignore_older_secs: 600
+
+  transforms:
+    parse_logs:
+      type: regex_parser
+      inputs:
+        - local_logs
+      patterns:
+        - '^(?P<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) (?P<host>\S+) (?P<process>\S+): (?P<message>.*)$'
+        - '^(?P<timestamp>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+[+-]\d{2}:\d{2}) (?P<level>\S+) (?P<message>.*)$'
+
+  sinks:
+    console:
+      type: console
+      inputs:
+        - parse_logs
+      encoding:
+        codec: json
+
+    clickhouse:
+      type: clickhouse
+      inputs:
+        - parse_logs
+      endpoint: "http://{{ hostvars['clickhouse-01']['ansible_default_ipv4']['address'] }}:8123"
+      database: logs
+      table: system.events
+      compression: gzip
+      healthcheck: true
+      batch:
+        max_events: 1000
+        timeout_secs: 1

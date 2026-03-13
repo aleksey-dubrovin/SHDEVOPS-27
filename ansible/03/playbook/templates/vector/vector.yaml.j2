@@ -1,0 +1,27 @@
+data_dir: {{ vector_data_dir }}
+sources:
+  local_logs:
+    type: file
+    include:
+      - /var/log/messages
+      - /var/log/secure
+    read_from: beginning
+sinks:
+  console:
+    type: console
+    inputs:
+      - local_logs
+    encoding:
+      codec: json
+  clickhouse:
+    type: clickhouse
+    inputs:
+      - local_logs
+    endpoint: "http://{{ hostvars['clickhouse-01']['ansible_default_ipv4']['address'] }}:8123"
+    database: logs
+    table: system.events
+    compression: gzip
+    healthcheck: true
+    batch:
+      max_events: 1000
+      timeout_secs: 1

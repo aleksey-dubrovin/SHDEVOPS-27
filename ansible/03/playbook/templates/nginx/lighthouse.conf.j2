@@ -1,0 +1,24 @@
+server {
+    listen       80;
+    server_name  _;
+    root         {{ lighthouse_path }};
+
+    access_log  /var/log/nginx/lighthouse_access.log;
+    error_log   /var/log/nginx/lighthouse_error.log;
+
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+
+    # Настройки для Lighthouse
+    location /lighthouse {
+        alias {{ lighthouse_path }};
+        try_files $uri $uri/ =404;
+    }
+}
