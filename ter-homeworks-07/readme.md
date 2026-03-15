@@ -251,7 +251,7 @@ yc storage bucket delete --name shvirtd-tf-state-${YC_FOLDER_ID}  # опцион
 
 ### 5. LockBox секрет
 
-
+![alt text](image-6.png)
 
 ## 📊 Итоговые output-ы
 ```bash
