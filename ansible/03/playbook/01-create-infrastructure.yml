@@ -113,12 +113,12 @@
           register: sg_lighthouse
           failed_when: false
 
-    - name: Сохранение результатов
-      ansible.builtin.copy:
-        content: |
-          network_id: {{ network_id }}
-          subnet_id: {{ subnet_id }}
-          dest: "{{ playbook_dir }}/../.yc_infra.yml"
+        - name: Сохранение результатов
+          ansible.builtin.copy:
+            content: |
+            network_id: { { network_id: !!null "" }: !!null "" }
+            subnet_id: { { subnet_id: !!null "" }: !!null "" }
+            dest: "{{ playbook_dir }}/../.yc_infra.yml"
       changed_when: false
 
     - name: Вывод информации

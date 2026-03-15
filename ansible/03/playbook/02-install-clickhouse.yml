@@ -8,10 +8,8 @@
   tasks:
     - name: Получение информации о ClickHouse VM
       ansible.builtin.shell: >
-              yc compute instance get clickhouse-01 \ 
-              --folder-id {{ yc_folder_id }} \ 
-              --format json
-        environment:
+        yc compute instance get clickhouse-01 \  --folder-id {{ yc_folder_id }} \  --format json
+      environment:
         YC_TOKEN: "{{ yc_token }}"
         register: clickhouse_vm_get
       args:
@@ -32,18 +30,18 @@
 
     - name: Установка переменной с результатом
       ansible.builtin.set_fact:
-      vm_data: "{{ clickhouse_vm_get.stdout if clickhouse_vm_get is success else clickhouse_vm_create.stdout }}"
+        vm_data: "{{ clickhouse_vm_get.stdout if clickhouse_vm_get is success else clickhouse_vm_create.stdout }}"
 
     - name: Извлечение информации о ВМ
       ansible.builtin.set_fact:
-      vm_info: "{{ vm_data | from_json }}"
+        vm_info: "{{ vm_data | from_json }}"
 
     - name: Вывод информации
       ansible.builtin.debug:
-      msg:
-        - "ClickHouse VM: {{ vm_info.id }}"
-        - "Публичный IP: {{ vm_info.network_interfaces[0].primary_v4_address.one_to_one_nat.address }}"
-        - "Приватный IP: {{ vm_info.network_interfaces[0].primary_v4_address.address }}"
+        msg:
+          - "ClickHouse VM: {{ vm_info.id }}"
+          - "Публичный IP: {{ vm_info.network_interfaces[0].primary_v4_address.one_to_one_nat.address }}"
+          - "Приватный IP: {{ vm_info.network_interfaces[0].primary_v4_address.address }}"
 
     - name: Добавление хоста в инвентарь
       ansible.builtin.add_host:
@@ -52,7 +50,7 @@
         ansible_user: "{{ vm_user }}"
         ansible_private_key_file: "~/.ssh/aleksey"
         ansible_become: true
-      ansible.builtin.group: clickhouse
+        group: clickhouse
 
     - name: Сохранение IP в файл
       ansible.builtin.copy:
