@@ -1,4 +1,4 @@
-terraform {
+/* terraform {
   
   backend "s3" {
     
@@ -23,4 +23,4 @@ terraform {
       s3 = "https://storage.yandexcloud.net"
     }
   }
-}
+} */
