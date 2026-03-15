@@ -8,9 +8,9 @@
   tasks:
     - name: Получение ID подсети
       ansible.builtin.command: >
-              yc vpc subnet get public-subnet
-              --folder-id {{ yc_folder_id }}
-              --format json
+        yc vpc subnet get public-subnet
+        --folder-id {{ yc_folder_id }}
+        --format json
       register: subnet_info
       changed_when: false
       environment:
@@ -22,9 +22,9 @@
 
     - name: Получение последнего образа Rocky Linux
       ansible.builtin.command: >
-              yc compute image get-latest-from-family rocky-9-oslogin
-              --folder-id standard-images
-              --format json
+        yc compute image get-latest-from-family rocky-9-oslogin
+        --folder-id standard-images
+        --format json
       register: rocky_image
       changed_when: false
       environment:
@@ -35,9 +35,7 @@
         rocky_image_id: "{{ (rocky_image.stdout | from_json).id }}"
 
     - name: Получение информации о Vector VM
-      ansible.builtin.shell: yc compute instance get vector-01 \
-          --folder-id {{ yc_folder_id }} \
-          --format json
+      ansible.builtin.shell: yc compute instance get vector-01 \ --folder-id {{ yc_folder_id }} \ --format json
       environment:
         YC_TOKEN: "{{ yc_token }}"
       register: vector_vm_get
@@ -46,18 +44,10 @@
       ignore_errors: true
 
     - name: Создание Vector VM если не существует
-      ansible.builtin.shell: yc compute instance create vector-01 \
-          --folder-id {{ yc_folder_id }} \
-          --zone {{ yc_zone }} \
-          --platform standard-v3 \
-          --cores 2 \
-          --memory 4 \
-          --core-fraction 100 \
-          --create-boot-disk name=vector-boot,size=20,type=network-ssd,image-id={{ rocky_image_id }} \
-          --network-interface subnet-id={{ subnet_id }},nat-ip-version=ipv4 \
-          --metadata-from-file user-data=templates/cloud-init/vector.yaml.j2 \
-          --metadata ssh-keys="rocky:{{ lookup('file', '~/.ssh/aleksey.pub') }}" \
-          --format json
+      ansible.builtin.shell: yc compute instance create vector-01 \ --folder-id {{ yc_folder_id }} \ --zone {{ yc_zone }} \ --platform standard-v3 \ --cores 2 \
+        --memory 4 \ --core-fraction 100 \ --create-boot-disk name=vector-boot,size=20,type=network-ssd,image-id={{ rocky_image_id }} \ --network-interface
+        subnet-id={{ subnet_id }},nat-ip-version=ipv4 \ --metadata-from-file user-data=templates/cloud-init/vector.yaml.j2 \ --metadata ssh-keys="rocky:{{
+        lookup('file', '~/.ssh/aleksey.pub') }}" \ --format json
       environment:
         YC_TOKEN: "{{ yc_token }}"
       register: vector_vm_create
