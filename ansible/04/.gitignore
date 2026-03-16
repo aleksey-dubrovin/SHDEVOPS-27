@@ -1,0 +1,18 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Ansible
+*.retry
+ansible.log
+
+# Установленные зависимости (они скачиваются по requirements.yml)
+roles/*
+!roles/.gitkeep
+collections/*
+!collections/.gitkeep
+
+# Секреты
+.vault_pass.txt
+*.vault

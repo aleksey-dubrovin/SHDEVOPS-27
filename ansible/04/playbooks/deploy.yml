@@ -1,0 +1,13 @@
+---
+- name: Проверка окружения
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Проверка окружения collection
+      ansible.builtin.debug:
+        msg: "Environment is ready!"
+
+    - name: Пример
+      ansible.builtin.ping:
