@@ -1,0 +1,40 @@
+---
+- name: "Запуск и включение firewalld"
+  ansible.builtin.systemd:
+    name: "{{ firewall_service }}"
+    state: started
+    enabled: true
+  tags: [lighthouse, firewall]
+
+- name: "Настройка firewall для nginx"
+  ansible.builtin.firewalld:
+    service: "{{ item }}"
+    permanent: true
+    state: enabled
+    immediate: true
+  loop: "{{ firewall_ports }}"
+  tags: [lighthouse, firewall]
+
+- name: "Запуск и включение nginx"
+  ansible.builtin.systemd:
+    name: "{{ nginx_service }}"
+    state: started
+    enabled: true
+  tags: [lighthouse, service]
+
+- name: "Ожидание готовности nginx"
+  ansible.builtin.wait_for:
+    port: 80
+    delay: 5
+    timeout: 60
+  tags: [lighthouse, verify]
+
+- name: "Проверка доступности Lighthouse"
+  ansible.builtin.uri:
+    url: "http://{{ ansible_default_ipv4.address }}"
+    method: GET
+    status_code: 200
+    timeout: 10
+  register: lighthouse_check
+  failed_when: lighthouse_check.status != 200
+  tags: [lighthouse, verify]

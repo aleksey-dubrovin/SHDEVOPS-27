@@ -1,0 +1,49 @@
+---
+- name: "Получение списка всех VM из Yandex Cloud"
+  ansible.builtin.command: >
+    {{ yc_cli_path }} compute instance list
+    --folder-id {{ yc_folder_id }}
+    --format json
+  environment:
+    YC_TOKEN: "{{ yc_token }}"
+  register: vms_list_result
+  changed_when: false
+
+- name: "Ошибка получения списка VM"
+  ansible.builtin.fail:
+    msg: "Не удалось получить список VM. Код ошибки: {{ vms_list_result.rc }}, Ошибка: {{ vms_list_result.stderr }}"
+  when: vms_list_result.rc != 0
+
+- name: "Парсинг списка VM"
+  ansible.builtin.set_fact:
+    vms_raw: "{{ vms_list_result.stdout | from_json }}"
+
+- name: "Сбор детальной информации о каждой VM"
+  ansible.builtin.set_fact:
+    vm_details: "{{ vm_details | default([]) + [{
+      'name': item.name,
+      'id': item.id,
+      'fqdn': item.fqdn,
+      'zone': item.zone_id,
+      'status': item.status,
+      'created_at': item.created_at,
+      'platform': item.platform_id,
+      'public_ip': item.network_interfaces[0].primary_v4_address.one_to_one_nat.address | default(''),
+      'private_ip': item.network_interfaces[0].primary_v4_address.address,
+      'labels': item.labels | default({}),
+      'resources': {
+        'cores': item.resources.cores,
+        'memory': item.resources.memory,
+        'core_fraction': item.resources.core_fraction
+      }
+    }] }}"
+  loop: "{{ vms_raw }}"
+  loop_control:
+    label: "Обработка {{ item.name }}"
+
+- name: "Отладка vm_details"
+  ansible.builtin.debug:
+    msg:
+      - "vm_details длина: {{ vm_details | length }}"
+      - "vm_details: {{ vm_details }}"
+    verbosity: 2

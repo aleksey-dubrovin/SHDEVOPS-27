@@ -1,0 +1,24 @@
+---
+- name: Install by YUM | Add ClickHouse repository
+  ansible.builtin.get_url:
+    url: "https://packages.clickhouse.com/rpm/clickhouse.repo"
+    dest: "/etc/yum.repos.d/clickhouse.repo"
+    mode: '0644'
+  become: true
+  tags: [install]
+
+- name: Install by YUM | Install ClickHouse packages (without GPG check)
+  ansible.builtin.dnf:
+    name:
+      - clickhouse-server
+      - clickhouse-client
+      - clickhouse-common-static
+    state: present
+    update_cache: true
+    disable_gpg_check: true
+  become: true
+  tags: [install]
+  register: install_result
+  retries: 3
+  delay: 10
+  until: install_result is success

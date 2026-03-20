@@ -1,0 +1,46 @@
+---
+- name: "Загрузка переменных из group_vars"
+  ansible.builtin.include_vars:
+    file: "{{ playbook_dir }}/group_vars/all.yml"
+  delegate_to: localhost
+  run_once: true
+
+- name: "🚀 Запуск роли создания ВМ в Yandex Cloud"
+  ansible.builtin.debug:
+    msg: 
+      - "══════════════════════════════════════════════"
+      - "  YANDEX CLOUD VM CREATOR"
+      - "══════════════════════════════════════════════"
+      - "Папка:      {{ yc_folder_id }}"
+      - "Подсеть:    {{ default_vm.subnet_name }}"
+      - "Образ:      {{ default_vm.image_family }}"
+      - "Пользователь: {{ default_vm.vm_user }}"
+      - "ВМ в списке: {{ vms_to_create | length }}"
+      - "══════════════════════════════════════════════"
+
+- name: "Проверка наличия списка ВМ"
+  ansible.builtin.fail:
+    msg: "❌ Список vms_to_create пуст. Заполните его в group_vars/all.yml"
+  when: vms_to_create | length == 0
+
+- name: "Выполнение проверок"
+  ansible.builtin.include_tasks: setup.yml
+
+- name: "Создание виртуальных машин"
+  ansible.builtin.include_tasks: create_vms.yml
+
+- name: "Финальное сообщение"
+  ansible.builtin.debug:
+    msg:
+      - "══════════════════════════════════════════════"
+      - "  ✅ РОЛЬ УСПЕШНО ВЫПОЛНЕНА"
+      - "══════════════════════════════════════════════"
+      - "📊 Статистика:"
+      - "   Всего в списке: {{ vms_to_create | length }}"
+      - "   Уже существовали: {{ existing_vm_names | length if existing_vm_names is defined else 0 }}"
+      - "   Создано сейчас: {{ created_vms | length if created_vms is defined else 0 }}"
+      - "══════════════════════════════════════════════"
+      - "Следующий шаг:"
+      - "  Запустите генерацию инвентаря:"
+      - "    ansible-playbook -i inventory/local.yml site.yml --tags inventory"
+      - "══════════════════════════════════════════════"

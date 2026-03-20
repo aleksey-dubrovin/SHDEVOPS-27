@@ -14,14 +14,12 @@
 
 2. https://github.com/aleksey-dubrovin/lighthouse-role
 
-3. 
-
-Подготовка окружения
+3. Подготовка окружения
 ```bash
 mkdir -p playbooks roles collections inventories && touch ansible.cfg requirements.yml .gitignore
 ```
 
-Подготовка модулей
+3.1 Подготовка модулей
 ```bash
 #!/bin/bash
 set -e
@@ -45,7 +43,7 @@ cp -r .external/arenadata/ansible-module-yandex-cloud/module_utils/* module_util
 echo "✅ Модули Yandex Cloud установлены!"
 ```
 
-Добавление inventory-плагина yc_compute
+3.2 Добавление inventory-плагина yc_compute
 
 ```bash
 mkdir -p inventory_plugins
@@ -56,19 +54,33 @@ chmod 644 inventory_plugins/yc_compute.py
 
 ### Основная часть 
 
-1. 
+1. Установка зависимостей
 
 ```bash
 ansible-galaxy install -r requirements.yml -p .
+ansible-galaxy collection install -r requirements.yml
 ```
 
-2. 
+2. Создание ролей
 
 ![alt text](image.png)
 
-3. 
+3. Структура роли
 
 ![alt text](image-1.png)
 
-4. 
+4. Заполнение переменных
 
+5. Заполнение шаблонов конфигураций
+
+6. Заполнение описания для ролей
+
+7. Тестирование развертывания ролей
+
+8. Публикация ролей в репозиторий
+
+9. Выполнение общего плейбук последовательно по ролям
+
+10. Публикация плейбук в репозитории
+
+11. Заполнение описания для плейбук

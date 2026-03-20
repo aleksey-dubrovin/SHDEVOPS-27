@@ -1,9 +1,5 @@
 ---
-collections:
-  - name: community.general
-    version: ">=7.0.0"
-roles:
   - src: git@github.com:AlexeySetevoi/ansible-clickhouse.git
     scm: git
     version: "1.13"
-    name: clickhouse
+    name: clickhouse 

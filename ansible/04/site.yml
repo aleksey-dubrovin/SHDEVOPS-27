@@ -1,0 +1,29 @@
+---
+- name: "Создание VM в Yandex Cloud"
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  tags: [create-vms, infrastructure]
+  roles:
+    - yc-vm-role
+
+- name: "Генерация инвентаря"
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  tags: [inventory, infrastructure]
+  roles:
+    - yc-inventory-role
+
+- name: "Настройка ClickHouse"
+  hosts: clickhouse
+  tags: [clickhouse, database]
+  roles:
+    - role: clickhouse
+
+- name: "Настройка Lighthouse"
+  hosts: lighthouse
+  become: true
+  tags: [lighthouse, web]
+  roles:
+    - lighthouse

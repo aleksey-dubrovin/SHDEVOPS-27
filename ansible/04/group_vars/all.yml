@@ -1,0 +1,86 @@
+---
+# ============================================
+# YANDEX CLOUD SETTINGS
+# ============================================
+yc_folder_id: "{{ lookup('env', 'YC_FOLDER_ID') }}"
+yc_token: "{{ lookup('env', 'YC_TOKEN') }}"
+yc_cli_path: "yc"
+yc_image_folder: "standard-images"
+
+# ============================================
+# DEFAULT VM SETTINGS (для всех ролей)
+# ============================================
+default_vm:
+  zone: "ru-central1-b"
+  subnet_name: "net-ru-central1-b"
+  image_family: "rocky-9-oslogin"
+  ssh_key_path: "~/.ssh/aleksey"
+  vm_user: "rocky"
+  platform_id: "standard-v3"
+  cores: 2
+  memory: 1
+  core_fraction: 20
+  disk_size: 10
+  disk_type: "network-hdd"
+  assign_public_ip: true
+  preemptible: true
+
+# ============================================
+# VM CONFIGURATION (список для создания)
+# ============================================
+vms_to_create:
+  - name: "clickhouse-01"
+    group: "clickhouse"
+    description: "ClickHouse server for logs platform"
+    labels:
+      role: "database"
+      app: "clickhouse"
+      environment: "production"
+      ansible_group: "clickhouse"
+  
+  - name: "vector-01"
+    group: "vector"
+    description: "Vector log aggregator"
+    labels:
+      role: "logs"
+      app: "vector"
+      environment: "production"
+      ansible_group: "vector"
+  
+  - name: "lighthouse-01"
+    group: "lighthouse"
+    description: "Lighthouse web interface"
+    labels:
+      role: "web"
+      app: "lighthouse"
+      environment: "production"
+      ansible_group: "lighthouse"
+
+# ============================================
+# INVENTORY SETTINGS
+# ============================================
+inventory:
+  file: "{{ playbook_dir }}/inventory/inventory-prod.yml"
+  create_group_vars: true
+  group_vars_dir: "{{ playbook_dir }}/group_vars"
+  include_groups:
+    - all_vms
+    - clickhouse
+    - vector
+    - lighthouse
+    - role_database
+    - role_logs
+    - role_web
+  # Исключать ли группы с пустым количеством VM
+  skip_empty_groups: true
+# ============================================
+# VALIDATION SETTINGS
+# ============================================
+validation:
+  checks:
+    yc_cli_installed: true
+    yc_token_valid: true
+    folder_exists: true
+    subnet_exists: true
+    image_exists: true
+  fail_fast: true

@@ -1,0 +1,35 @@
+---
+- name: "Загрузка переменных из group_vars"
+  ansible.builtin.include_vars:
+    file: "{{ playbook_dir }}/group_vars/all.yml"
+  delegate_to: localhost
+  run_once: true
+
+- name: "Yandex Cloud Inventory Generator"
+  ansible.builtin.debug:
+    msg:
+      - "=================================================="
+      - "  YANDEX CLOUD INVENTORY GENERATOR"
+      - "=================================================="
+      - "Папка: {{ yc_folder_id }}"
+      - "Файл инвентаря: {{ inventory.file }}"
+      - "=================================================="
+
+- name: "Сбор информации о VM из Yandex Cloud"
+  ansible.builtin.include_tasks: collect_vms.yml
+
+- name: "Группировка VM"
+  ansible.builtin.include_tasks: group_vms.yml
+
+- name: "Генерация inventory файла"
+  ansible.builtin.include_tasks: generate_inventory.yml
+
+- name: "Инвентарь успешно сгенерирован"
+  ansible.builtin.debug:
+    msg:
+      - "=================================================="
+      - "Инвентарь сохранен: {{ inventory.file }}"
+      - "Статистика:"
+      - "   Всего VM: {{ vm_details | length }}"
+      - "   Группы: {{ groups.keys() | join(', ') }}"
+      - "=================================================="

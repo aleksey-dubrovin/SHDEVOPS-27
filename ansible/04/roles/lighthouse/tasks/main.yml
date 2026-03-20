@@ -1,0 +1,16 @@
+---
+- name: "Загрузка переменных из group_vars"
+  ansible.builtin.include_vars:
+    file: "{{ playbook_dir }}/group_vars/all.yml"
+  delegate_to: localhost
+  run_once: true
+  when: playbook_dir is defined
+
+- name: "Установка Lighthouse"
+  ansible.builtin.include_tasks: install.yml
+
+- name: "Настройка Lighthouse"
+  ansible.builtin.include_tasks: configure.yml
+
+- name: "Настройка сервисов"
+  ansible.builtin.include_tasks: service.yml
