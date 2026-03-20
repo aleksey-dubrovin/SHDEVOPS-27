@@ -1,38 +1,56 @@
-Role Name
-=========
+# Ansible Role: Vector
 
-A brief description of the role goes here.
+Роль для установки и настройки Vector — легковесного сборщика логов.
 
-Requirements
-------------
+## Требования
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- Rocky Linux 9
+- Доступ к интернету для скачивания RPM пакета
 
-Role Variables
---------------
+## Переменные
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+| Переменная | Описание | Значение по умолчанию |
+|------------|----------|----------------------|
+| `vector_version` | Версия Vector | `0.21.0` |
+| `vector_config_path` | Путь к конфигурации | `/etc/vector/vector.yaml` |
+| `clickhouse_host` | Хост ClickHouse | `clickhouse-01` |
+| `clickhouse_port` | Порт ClickHouse | `8123` |
+| `clickhouse_database` | База данных | `logs` |
+| `clickhouse_table` | Таблица | `syslog` |
 
-Dependencies
-------------
+## Источники (sources)
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+По умолчанию собирает логи из:
+- `/var/log/messages`
+- `/var/log/secure`
 
-Example Playbook
-----------------
+## Трансформации (transforms)
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Парсит syslog и добавляет поле `host`.
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+## Стоки (sinks)
 
-License
--------
+Отправляет данные в ClickHouse.
 
-BSD
+## Пример использования
 
-Author Information
-------------------
+```yaml
+- name: "Настройка Vector"
+  hosts: vector
+  become: true
+  gather_facts: true
+  roles:
+    - vector-role
+  vars:
+    clickhouse_host: "192.168.172.21"
+```
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+## Запуск
+
+```bash
+ansible-playbook -i inventory/inventory-prod.yml site.yml --tags vector
+```
+
+## Лицензия
+
+MIT
