@@ -1,3 +1,8 @@
-#SPDX-License-Identifier: MIT-0
 ---
-# handlers file for vector-role
+- name: restart vector
+  ansible.builtin.systemd:
+    name: vector
+    state: restarted
+    daemon_reload: true
+    enabled: true
+  become: true

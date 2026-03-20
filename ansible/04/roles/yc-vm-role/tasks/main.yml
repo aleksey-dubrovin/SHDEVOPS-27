@@ -5,7 +5,7 @@
   delegate_to: localhost
   run_once: true
 
-- name: "🚀 Запуск роли создания ВМ в Yandex Cloud"
+- name: "Запуск роли создания ВМ в Yandex Cloud"
   ansible.builtin.debug:
     msg: 
       - "══════════════════════════════════════════════"
@@ -20,7 +20,7 @@
 
 - name: "Проверка наличия списка ВМ"
   ansible.builtin.fail:
-    msg: "❌ Список vms_to_create пуст. Заполните его в group_vars/all.yml"
+    msg: "Список vms_to_create пуст. Заполните его в group_vars/all.yml"
   when: vms_to_create | length == 0
 
 - name: "Выполнение проверок"
@@ -33,9 +33,9 @@
   ansible.builtin.debug:
     msg:
       - "══════════════════════════════════════════════"
-      - "  ✅ РОЛЬ УСПЕШНО ВЫПОЛНЕНА"
+      - "  РОЛЬ УСПЕШНО ВЫПОЛНЕНА"
       - "══════════════════════════════════════════════"
-      - "📊 Статистика:"
+      - "Статистика:"
       - "   Всего в списке: {{ vms_to_create | length }}"
       - "   Уже существовали: {{ existing_vm_names | length if existing_vm_names is defined else 0 }}"
       - "   Создано сейчас: {{ created_vms | length if created_vms is defined else 0 }}"

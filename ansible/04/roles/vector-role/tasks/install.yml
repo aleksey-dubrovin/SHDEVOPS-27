@@ -1,0 +1,81 @@
+---
+- name: "Обновление системы"
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+    update_cache: true
+  become: true
+  tags: [vector, update]
+
+- name: "Установка необходимых пакетов"
+  ansible.builtin.dnf:
+    name:
+      - curl
+      - wget
+      - python3
+      - python3-pip
+      - python3-libselinux
+      - policycoreutils-python-utils
+    state: present
+    update_cache: true
+  become: true
+  tags: [vector, packages]
+
+- name: "Скачивание Vector RPM"
+  ansible.builtin.get_url:
+    url: "{{ vector_download_url }}"
+    dest: "/tmp/{{ vector_package }}"
+    mode: '0644'
+    validate_certs: true
+    timeout: 60
+  register: download_result
+  until: download_result is success
+  retries: 5
+  delay: 10
+  become: true
+  tags: [vector, download]
+
+- name: "Установка Vector"
+  ansible.builtin.dnf:
+    name: "/tmp/{{ vector_package }}"
+    state: present
+    disable_gpg_check: true
+  become: true
+  tags: [vector, install]
+
+- name: "Создание пользователя vector"
+  ansible.builtin.user:
+    name: "{{ vector_user }}"
+    system: true
+    shell: /sbin/nologin
+    create_home: false
+  become: true
+  tags: [vector, user]
+
+- name: "Добавление пользователя vector в группу adm"
+  ansible.builtin.user:
+    name: "{{ vector_user }}"
+    groups: adm
+    append: true
+  become: true
+  tags: [vector, permissions]
+
+- name: "Создание директорий Vector"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ vector_user }}"
+    group: "{{ vector_group }}"
+    mode: '0755'
+  loop:
+    - "{{ vector_data_dir }}"
+    - "/etc/vector"
+  become: true
+  tags: [vector, directories]
+
+- name: "Очистка временного RPM файла"
+  ansible.builtin.file:
+    path: "/tmp/{{ vector_package }}"
+    state: absent
+  become: true
+  tags: [vector, cleanup]

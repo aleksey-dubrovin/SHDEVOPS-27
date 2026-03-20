@@ -6,7 +6,7 @@
   failed_when: false
   when: validation.checks.yc_cli_installed
 
-- name: "❌ YC CLI не найден"
+- name: "YC CLI не найден"
   ansible.builtin.fail:
     msg: |
       YC CLI не найден по пути '{{ yc_cli_path }}'.
@@ -16,7 +16,7 @@
     - yc_version_check.rc != 0
     - validation.fail_fast
 
-- name: "✅ YC CLI версия: {{ yc_version_check.stdout_lines[0] if yc_version_check.stdout_lines else 'установлен' }}"
+- name: "YC CLI версия: {{ yc_version_check.stdout_lines[0] if yc_version_check.stdout_lines else 'установлен' }}"
   ansible.builtin.debug:
     msg: "YC CLI version check passed"
   when: yc_version_check.rc == 0
@@ -35,7 +35,7 @@
     - yc_token is defined
     - yc_token | length > 0
 
-- name: "❌ Невалидный токен или нет доступа"
+- name: "Невалидный токен или нет доступа"
   ansible.builtin.fail:
     msg: |
       Не удалось выполнить запрос с указанным токеном.
@@ -46,7 +46,7 @@
     - token_check.rc != 0
     - validation.fail_fast
 
-- name: "✅ Токен валидный (доступно облаков: {{ (token_check.stdout | from_json) | length }})"
+- name: "Токен валидный (доступно облаков: {{ (token_check.stdout | from_json) | length }})"
   ansible.builtin.debug:
     msg: "Token validation passed"
   when: token_check is defined and token_check.rc == 0
@@ -65,7 +65,7 @@
     - yc_folder_id is defined
     - yc_folder_id | length > 0
 
-- name: "❌ Папка не найдена: {{ yc_folder_id }}"
+- name: "Папка не найдена: {{ yc_folder_id }}"
   ansible.builtin.fail:
     msg: "Папка с ID '{{ yc_folder_id }}' не существует или нет доступа"
   when: 
@@ -73,7 +73,7 @@
     - folder_check.rc != 0
     - validation.fail_fast
 
-- name: "✅ Папка: {{ (folder_check.stdout | from_json).name }}"
+- name: "Папка: {{ (folder_check.stdout | from_json).name }}"
   ansible.builtin.debug:
     msg: "Folder validation passed"
   when: folder_check.rc == 0
@@ -93,7 +93,7 @@
     - yc_folder_id is defined
     - yc_folder_id | length > 0
 
-- name: "❌ Подсеть не найдена: {{ default_vm.subnet_name }}"
+- name: "Подсеть не найдена: {{ default_vm.subnet_name }}"
   ansible.builtin.fail:
     msg: "Подсеть '{{ default_vm.subnet_name }}' не существует. Создайте её вручную."
   when: 
@@ -101,7 +101,7 @@
     - subnet_check.rc != 0
     - validation.fail_fast
 
-- name: "✅ Подсеть найдена"
+- name: "Подсеть найдена"
   ansible.builtin.set_fact:
     subnet_id: "{{ (subnet_check.stdout | from_json).id }}"
     subnet_info: "{{ subnet_check.stdout | from_json }}"
@@ -122,7 +122,7 @@
     - yc_folder_id is defined
     - yc_folder_id | length > 0
 
-- name: "❌ Образ не найден: {{ default_vm.image_family }}"
+- name: "Образ не найден: {{ default_vm.image_family }}"
   ansible.builtin.fail:
     msg: "Семейство образов '{{ default_vm.image_family }}' не найдено"
   when: 
@@ -130,13 +130,13 @@
     - image_check.rc != 0
     - validation.fail_fast
 
-- name: "✅ Образ найден"
+- name: "Образ найден"
   ansible.builtin.set_fact:
     image_id: "{{ (image_check.stdout | from_json).id }}"
     image_info: "{{ image_check.stdout | from_json }}"
   when: image_check.rc == 0
 
-- name: "✅ Все проверки пройдены успешно"
+- name: "Все проверки пройдены успешно"
   ansible.builtin.debug:
     msg: "Validation passed. Ready to create VMs."
   when: 

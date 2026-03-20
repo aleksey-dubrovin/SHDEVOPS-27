@@ -26,4 +26,14 @@
   become: true
   tags: [lighthouse, web]
   roles:
-    - lighthouse
+    - lighthouse-role
+
+- name: "Настройка Vector"
+  hosts: vector
+  become: true
+  gather_facts: true
+  tags: [vector, logs]
+  vars:
+    clickhouse_host: "{{ hostvars['clickhouse-01']['private_ip'] | default('clickhouse-01') }}"
+  roles:
+    - vector-role

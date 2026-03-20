@@ -52,18 +52,18 @@ all_vms:
         environment: production
         role: database
     lighthouse-01:
-      ansible_host: 178.154.219.241
+      ansible_host: 178.154.218.103
       ansible_user: rocky
       ansible_ssh_private_key_file: /home/aleksey/.ssh/aleksey
       private_ip: 192.168.172.32
-      public_ip: 178.154.219.241
+      public_ip: 178.154.218.103
       fqdn: epdu9j5rbmmfu0muc4ee.auto.internal
       vm_id: epdu9j5rbmmfu0muc4ee
       zone: ru-central1-b
       status: RUNNING
       created_at: 2026-03-20T14:01:17Z
       cores: 2
-      memory_gb: 1.0
+      memory_gb: 2.0
       labels:
         ansible_group: lighthouse
         app: lighthouse
@@ -114,18 +114,18 @@ clickhouse:
 lighthouse:
   hosts:
     lighthouse-01:
-      ansible_host: 178.154.219.241
+      ansible_host: 178.154.218.103
       ansible_user: rocky
       ansible_ssh_private_key_file: /home/aleksey/.ssh/aleksey
       private_ip: 192.168.172.32
-      public_ip: 178.154.219.241
+      public_ip: 178.154.218.103
       fqdn: epdu9j5rbmmfu0muc4ee.auto.internal
       vm_id: epdu9j5rbmmfu0muc4ee
       zone: ru-central1-b
       status: RUNNING
       created_at: 2026-03-20T14:01:17Z
       cores: 2
-      memory_gb: 1.0
+      memory_gb: 2.0
       labels:
         ansible_group: lighthouse
         app: lighthouse
@@ -176,18 +176,18 @@ role_database:
 role_web:
   hosts:
     lighthouse-01:
-      ansible_host: 178.154.219.241
+      ansible_host: 178.154.218.103
       ansible_user: rocky
       ansible_ssh_private_key_file: /home/aleksey/.ssh/aleksey
       private_ip: 192.168.172.32
-      public_ip: 178.154.219.241
+      public_ip: 178.154.218.103
       fqdn: epdu9j5rbmmfu0muc4ee.auto.internal
       vm_id: epdu9j5rbmmfu0muc4ee
       zone: ru-central1-b
       status: RUNNING
       created_at: 2026-03-20T14:01:17Z
       cores: 2
-      memory_gb: 1.0
+      memory_gb: 2.0
       labels:
         ansible_group: lighthouse
         app: lighthouse

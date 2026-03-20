@@ -24,3 +24,18 @@
     mode: '0644'
   notify: restart nginx
   tags: [lighthouse, nginx]
+
+- name: "Исправление SELinux контекста для Lighthouse"
+  ansible.builtin.command:
+    cmd: semanage fcontext -a -t httpd_sys_content_t "{{ lighthouse_path }}(/.*)?"
+  become: true
+  register: selinux_fcontext
+  changed_when: selinux_fcontext.rc == 0
+  failed_when: false
+  tags: [lighthouse, selinux]
+
+- name: "Применение SELinux контекста"
+  ansible.builtin.command:
+    cmd: restorecon -Rv {{ lighthouse_path }}
+  become: true
+  tags: [lighthouse, selinux]
