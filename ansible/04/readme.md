@@ -27,6 +27,15 @@ ansible-galaxy install -r requirements.yml -p .
 ansible-galaxy collection install -r requirements.yml
 ```
 
+### Роль ansible playbook для развертывания конвейера данных Vector
+
+https://github.com/aleksey-dubrovin/vector-role.git
+
+
+### Роль ansible playbook для развертывания web интерфейса для Clickhouse
+
+https://github.com/aleksey-dubrovin/lighthouse-role.git
+
 # Ansible Playbook: Log Platform Deployment
 
 Полная автоматизация развертывания платформы сбора логов в Yandex Cloud:
