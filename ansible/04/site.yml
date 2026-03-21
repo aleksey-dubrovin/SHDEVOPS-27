@@ -19,7 +19,7 @@
   hosts: clickhouse
   tags: [clickhouse, database]
   roles:
-    - role: clickhouse
+    - clickhouse
 
 - name: "Настройка Lighthouse"
   hosts: lighthouse
