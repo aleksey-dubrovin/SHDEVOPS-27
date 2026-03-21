@@ -102,6 +102,7 @@ ansible-playbook -i inventory/inventory-prod.yml site.yml --tags lighthouse
 
 ```bash
 ansible-playbook -i inventory/local.yml site.yml
+ansible-playbook -i inventory/inventory-prod.yml site.yml
 ```
 
 ## Проверка работы
