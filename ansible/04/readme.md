@@ -23,7 +23,7 @@ mkdir -p playbooks roles collections inventories && touch ansible.cfg requiremen
 1. Установка зависимостей
 
 ```bash
-ansible-galaxy install -r requirements.yml -p .
+ansible-galaxy install -r requirements.yml -p ./roles
 ansible-galaxy collection install -r requirements.yml
 ```
 
