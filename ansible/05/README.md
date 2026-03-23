@@ -69,6 +69,9 @@ docker run --privileged=True -v <path_to_repo>:/opt/vector-role -w /opt/vector-r
 ```
 ![alt text](image-12.png)
 
+<img width="1142" height="221" alt="image" src="https://github.com/user-attachments/assets/827ab0bf-6d41-4506-a7e3-3bf83aed29a5" />
+
+
 Дистрибутивы на сайте https://packages.timber.io/vector/0.21.0/ не доcтупны.
 
 https://github.com/aleksey-dubrovin/vector-role/releases/tag/v.1.1.0
