@@ -1,6 +1,7 @@
 ## Домашнее задание к занятию 5 «Тестирование roles»
 
 [Playbook Testing](https://docs.ansible.com/projects/molecule/getting-started-playbooks/)
+
 [TOX](https://tox.wiki/en/latest/)
 
 ### Подготовка к выполнению
