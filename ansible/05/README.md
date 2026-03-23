@@ -49,9 +49,23 @@ molecule syntax
 
 Тестирование
 ```bash
+export ANSIBLE_ALLOW_BROKEN_CONDITIONALS=1
 molecule test
 ```
 ![alt text](image-9.png)
 
 4. Запуск сценария теста и проверка результатов Molecule
 
+Запуск контейнера с TOX, где path_to_repo — путь до корня репозитория с vector-role на вашей файловой системе.
+```bash
+docker run --privileged=True -v <path_to_repo>:/opt/vector-role -w /opt/vector-role -it aragast/netology:latest /bin/bash
+```
+![alt text](image-10.png)
+
+Тестирование
+```bash
+[root@4f71948e8537 vector-role]# tox
+```
+![alt text](image-12.png)
+
+Дистрибутивы на сайте https://packages.timber.io/vector/0.21.0/ не дотупны.

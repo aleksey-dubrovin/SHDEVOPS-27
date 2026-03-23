@@ -1,0 +1,36 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+  tasks:
+    - name: Проверка | Установлен ли Vector
+      ansible.builtin.command:
+        cmd: which vector
+      register: vector_path
+      failed_when: vector_path.rc != 0
+      changed_when: false
+
+    - name: Проверка | Версия Vector
+      ansible.builtin.command:
+        cmd: vector --version
+      register: vector_version
+      failed_when: vector_version.rc != 0
+      changed_when: false
+
+    - name: Проверка | Конфигурационный файл существует
+      ansible.builtin.stat:
+        path: /etc/vector/vector.yaml
+      register: vector_config
+      failed_when: not vector_config.stat.exists
+      changed_when: false
+
+    - name: Проверка | Конфигурация валидна
+      ansible.builtin.command:
+        cmd: vector validate --config-yaml /etc/vector/vector.yaml
+      register: vector_validate
+      failed_when: vector_validate.rc != 0
+      changed_when: false
+
+    - name: Вывод информации о версии
+      ansible.builtin.debug:
+        msg: "Vector version: {{ vector_version.stdout }}"
