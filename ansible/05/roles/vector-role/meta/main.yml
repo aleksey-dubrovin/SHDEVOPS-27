@@ -1,0 +1,32 @@
+---
+galaxy_info:
+  role_name: vector
+  namespace: aleksey_dubrovin
+  author: Aleksey Dubrovin
+  description: Install and configure Vector log collector
+  company: "Your Company"
+  license: MIT
+
+  min_ansible_version: "2.9"
+
+  platforms:
+    - name: Rocky
+      versions:
+        - "9"
+    - name: EL
+      versions:
+        - "8"
+        - "9"
+    - name: Ubuntu
+      versions:
+        - focal
+        - jammy
+
+  galaxy_tags:
+    - vector
+    - logs
+    - observability
+    - logging
+    - clickhouse
+
+dependencies: []

@@ -1,0 +1,27 @@
+---
+# Yandex Cloud CLI settings
+yc_cli_path: "yc"
+
+# Настройки подключения по умолчанию (будут переопределены из all.yml)
+default_connection:
+  ansible_user: "rocky"
+  ansible_ssh_private_key_file: "~/.ssh/aleksey.pub"
+  ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+
+# Группировка по меткам
+group_by:
+  - key: labels.ansible_group
+    prefix: ""
+  - key: labels.role
+    prefix: "role"
+  - key: labels.app
+    prefix: "app"
+  - key: zone_id
+    prefix: "zone"
+
+# Дополнительные переменные для хостов
+compose_vars:
+  ansible_host: network_interfaces[0].primary_v4_address.one_to_one_nat.address
+  private_ip: network_interfaces[0].primary_v4_address.address
+  public_ip: network_interfaces[0].primary_v4_address.one_to_one_nat.address
+  fqdn: fqdn

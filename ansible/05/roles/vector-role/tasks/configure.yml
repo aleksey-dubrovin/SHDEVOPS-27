@@ -1,0 +1,53 @@
+---
+- name: "Настройка Vector (YAML формат)"
+  ansible.builtin.template:
+    src: vector.yaml.j2
+    dest: "{{ vector_config_path }}"
+    owner: "{{ vector_user }}"
+    group: "{{ vector_group }}"
+    mode: '0644'
+    backup: true
+  notify: restart vector
+  become: true
+  tags: [vector, configure]
+
+- name: "Создание systemd override директории"
+  ansible.builtin.file:
+    path: /etc/systemd/system/vector.service.d
+    state: directory
+    mode: '0755'
+  become: true
+  tags: [vector, systemd]
+
+- name: "Создание systemd override для YAML конфига"
+  ansible.builtin.copy:
+    content: |
+      [Service]
+      ExecStartPre=
+      ExecStartPre=/usr/bin/vector validate --config-yaml {{ vector_config_path }} --no-environment
+      ExecStart=
+      ExecStart=/usr/bin/vector --config-yaml {{ vector_config_path }}
+    dest: /etc/systemd/system/vector.service.d/override.conf
+    mode: '0644'
+  notify: restart vector
+  become: true
+  tags: [vector, systemd]
+
+- name: "Настройка прав на логи"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    mode: '0640'
+    owner: root
+    group: adm
+  loop:
+    - /var/log/messages
+    - /var/log/secure
+  ignore_errors: true
+  become: true
+  tags: [vector, permissions]
+
+- name: "Перезагрузка systemd"
+  ansible.builtin.systemd:
+    daemon_reload: true
+  become: true
+  tags: [vector, systemd]

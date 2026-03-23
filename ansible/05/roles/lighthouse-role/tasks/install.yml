@@ -1,0 +1,55 @@
+---
+- name: "Обновление системы"
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+    update_cache: true
+  tags: [lighthouse, update]
+
+- name: "Установка EPEL репозитория"
+  ansible.builtin.dnf:
+    name: epel-release
+    state: present
+    update_cache: true
+  tags: [lighthouse, repo]
+
+- name: "Установка необходимых пакетов"
+  ansible.builtin.dnf:
+    name:
+      - nginx
+      - git
+      - python3
+      - python3-pip
+      - python3-libselinux
+      - policycoreutils-python-utils
+      - firewalld
+    state: present
+    update_cache: true
+  tags: [lighthouse, packages]
+
+- name: "Удаление старой директории Lighthouse (если есть)"
+  ansible.builtin.file:
+    path: "{{ lighthouse_path }}"
+    state: absent
+  tags: [lighthouse, cleanup]
+
+- name: "Клонирование репозитория Lighthouse"
+  ansible.builtin.git:
+    repo: "{{ lighthouse_repo }}"
+    dest: "{{ lighthouse_path }}"
+    version: "{{ lighthouse_version }}"
+    force: true
+    depth: 1
+  register: git_result
+  until: git_result is success
+  retries: 3
+  delay: 10
+  tags: [lighthouse, git]
+
+- name: "Установка прав на директорию Lighthouse"
+  ansible.builtin.file:
+    path: "{{ lighthouse_path }}"
+    owner: "{{ nginx_user }}"
+    group: "{{ nginx_group }}"
+    recurse: true
+  tags: [lighthouse, permissions]

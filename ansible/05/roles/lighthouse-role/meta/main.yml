@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  author: "Your Name"
+  description: "Lighthouse web interface installation"
+  company: "Your Company"
+  license: "MIT"
+  min_ansible_version: "2.9"
+  platforms:
+    - name: "EL"
+      versions:
+        - "9"
+  galaxy_tags:
+    - lighthouse
+    - nginx
+    - web
+
+dependencies: []

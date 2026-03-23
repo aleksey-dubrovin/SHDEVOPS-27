@@ -1,0 +1,8 @@
+---
+- name: "Отладка структуры groups"
+  ansible.builtin.debug:
+    msg:
+      - "groups тип: {{ groups | type_debug }}"
+      - "groups ключи: {{ groups.keys() | list }}"
+      - "groups содержимое: {{ groups | to_nice_json }}"
+    verbosity: 0

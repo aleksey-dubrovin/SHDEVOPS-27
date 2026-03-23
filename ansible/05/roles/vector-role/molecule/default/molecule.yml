@@ -1,0 +1,90 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+  options:
+    D: true
+    vv: true
+lint: |
+  yamllint .
+  ansible-lint
+  flake8
+platforms:
+  - name: ubuntu2204
+    image: ubuntu:22.04
+    dockerfile: Dockerfile.j2
+    # pre_build_image: true
+    command: /sbin/init
+    privileged: true
+    capabilities:
+      - SYS_ADMIN
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+    env:
+      ANSIBLE_USER: ansible
+      SUDO_GROUP: sudo
+      DEPLOY_GROUP: deployer
+      container: docker
+  - name: oraclelinux8
+    image: oraclelinux:8
+    dockerfile: Dockerfile.j2
+    # pre_build_image: true
+    command: /usr/sbin/init
+    privileged: true
+    capabilities:
+      - SYS_ADMIN
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+    env:
+      ANSIBLE_USER: ansible
+      SUDO_GROUP: wheel
+      DEPLOY_GROUP: deployer
+      container: docker
+  - name: astra_ubi18
+    image: registry.astralinux.ru/library/astra/ubi18:latest
+    dockerfile: Dockerfile.j2
+    # pre_build_image: true
+    command: /usr/sbin/init
+    privileged: true
+    capabilities:
+      - SYS_ADMIN
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+    env:
+      ANSIBLE_USER: ansible
+      SUDO_GROUP: wheel
+      DEPLOY_GROUP: deployer
+      container: docker
+  - name: redos_ubi8
+    image: registry.red-soft.ru/ubi8/ubi:latest
+    dockerfile: Dockerfile.j2
+    # pre_build_image: true
+    command: /usr/sbin/init
+    privileged: true
+    capabilities:
+      - SYS_ADMIN
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+    env:
+      ANSIBLE_USER: ansible
+      SUDO_GROUP: wheel
+      DEPLOY_GROUP: deployer
+      container: docker
+provisioner:
+  name: ansible
+verifier:
+  name: ansible
+

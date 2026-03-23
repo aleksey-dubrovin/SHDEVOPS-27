@@ -1,0 +1,147 @@
+---
+- name: "ПРОВЕРКА 1: YC CLI установлен?"
+  ansible.builtin.command: "{{ yc_cli_path }} --version"
+  register: yc_version_check
+  changed_when: false
+  failed_when: false
+  when: validation.checks.yc_cli_installed
+
+- name: "YC CLI не найден"
+  ansible.builtin.fail:
+    msg: |
+      YC CLI не найден по пути '{{ yc_cli_path }}'.
+      Установите YC CLI: https://cloud.yandex.ru/docs/cli/operations/install-cli
+  when: 
+    - validation.checks.yc_cli_installed
+    - yc_version_check.rc != 0
+    - validation.fail_fast
+
+- name: "YC CLI версия: {{ yc_version_check.stdout_lines[0] if yc_version_check.stdout_lines else 'установлен' }}"
+  ansible.builtin.debug:
+    msg: "YC CLI version check passed"
+  when: yc_version_check.rc == 0
+
+- name: "ПРОВЕРКА 2: Токен валидный?"
+  ansible.builtin.command: >
+    {{ yc_cli_path }} resource-manager cloud list
+    --format json
+  environment:
+    YC_TOKEN: "{{ yc_token }}"
+  register: token_check
+  changed_when: false
+  failed_when: false
+  when: 
+    - validation.checks.yc_token_valid
+    - yc_token is defined
+    - yc_token | length > 0
+
+- name: "Невалидный токен или нет доступа"
+  ansible.builtin.fail:
+    msg: |
+      Не удалось выполнить запрос с указанным токеном.
+      Проверьте YC_TOKEN: {{ yc_token | default('не указан') }}
+  when: 
+    - validation.checks.yc_token_valid
+    - token_check is defined
+    - token_check.rc != 0
+    - validation.fail_fast
+
+- name: "Токен валидный (доступно облаков: {{ (token_check.stdout | from_json) | length }})"
+  ansible.builtin.debug:
+    msg: "Token validation passed"
+  when: token_check is defined and token_check.rc == 0
+
+- name: "ПРОВЕРКА 3: Папка {{ yc_folder_id }} существует?"
+  ansible.builtin.command: >
+    {{ yc_cli_path }} resource-manager folder get {{ yc_folder_id }}
+    --format json
+  environment:
+    YC_TOKEN: "{{ yc_token }}"
+  register: folder_check
+  changed_when: false
+  failed_when: false
+  when: 
+    - validation.checks.folder_exists
+    - yc_folder_id is defined
+    - yc_folder_id | length > 0
+
+- name: "Папка не найдена: {{ yc_folder_id }}"
+  ansible.builtin.fail:
+    msg: "Папка с ID '{{ yc_folder_id }}' не существует или нет доступа"
+  when: 
+    - validation.checks.folder_exists
+    - folder_check.rc != 0
+    - validation.fail_fast
+
+- name: "Папка: {{ (folder_check.stdout | from_json).name }}"
+  ansible.builtin.debug:
+    msg: "Folder validation passed"
+  when: folder_check.rc == 0
+
+- name: "ПРОВЕРКА 4: Подсеть '{{ default_vm.subnet_name }}' существует?"
+  ansible.builtin.command: >
+    {{ yc_cli_path }} vpc subnet get {{ default_vm.subnet_name }}
+    --folder-id {{ yc_folder_id }}
+    --format json
+  environment:
+    YC_TOKEN: "{{ yc_token }}"
+  register: subnet_check
+  changed_when: false
+  failed_when: false
+  when: 
+    - validation.checks.subnet_exists
+    - yc_folder_id is defined
+    - yc_folder_id | length > 0
+
+- name: "Подсеть не найдена: {{ default_vm.subnet_name }}"
+  ansible.builtin.fail:
+    msg: "Подсеть '{{ default_vm.subnet_name }}' не существует. Создайте её вручную."
+  when: 
+    - validation.checks.subnet_exists
+    - subnet_check.rc != 0
+    - validation.fail_fast
+
+- name: "Подсеть найдена"
+  ansible.builtin.set_fact:
+    subnet_id: "{{ (subnet_check.stdout | from_json).id }}"
+    subnet_info: "{{ subnet_check.stdout | from_json }}"
+  when: subnet_check.rc == 0
+
+- name: "ПРОВЕРКА 5: Образ '{{ default_vm.image_family }}' доступен?"
+  ansible.builtin.command: >
+    {{ yc_cli_path }} compute image get-latest-from-family {{ default_vm.image_family }}
+    --folder-id {{ yc_image_folder }}
+    --format json
+  environment:
+    YC_TOKEN: "{{ yc_token }}"
+  register: image_check
+  changed_when: false
+  failed_when: false
+  when: 
+    - validation.checks.image_exists
+    - yc_folder_id is defined
+    - yc_folder_id | length > 0
+
+- name: "Образ не найден: {{ default_vm.image_family }}"
+  ansible.builtin.fail:
+    msg: "Семейство образов '{{ default_vm.image_family }}' не найдено"
+  when: 
+    - validation.checks.image_exists
+    - image_check.rc != 0
+    - validation.fail_fast
+
+- name: "Образ найден"
+  ansible.builtin.set_fact:
+    image_id: "{{ (image_check.stdout | from_json).id }}"
+    image_info: "{{ image_check.stdout | from_json }}"
+  when: image_check.rc == 0
+
+- name: "Все проверки пройдены успешно"
+  ansible.builtin.debug:
+    msg: "Validation passed. Ready to create VMs."
+  when: 
+    - yc_version_check.rc == 0
+    - token_check.rc == 0
+    - folder_check.rc == 0
+    - subnet_check.rc == 0
+    - image_check.rc == 0

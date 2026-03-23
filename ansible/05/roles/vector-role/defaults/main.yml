@@ -1,0 +1,53 @@
+---
+# Vector version
+vector_version: "0.21.0"
+vector_package: "vector-{{ vector_version }}-1.x86_64.rpm"
+vector_download_url: "https://packages.timber.io/vector/{{ vector_version }}/{{ vector_package }}"
+
+# Paths
+vector_config_path: "/etc/vector/vector.yaml"
+vector_data_dir: "/var/lib/vector"
+
+# User and group
+vector_user: "vector"
+vector_group: "vector"
+
+# ClickHouse settings (will be overridden from group_vars if needed)
+clickhouse_host: "clickhouse-01"
+clickhouse_port: 8123
+clickhouse_database: "logs"
+clickhouse_table: "syslog"
+
+# Vector sources
+vector_sources:
+  - type: "file"
+    name: "file_source"
+    include:
+      - "/var/log/messages"
+      - "/var/log/secure"
+    read_from: "beginning"
+    ignore_older_secs: 600
+
+# Vector transforms
+vector_transforms:
+  - type: "remap"
+    name: "remap_transform"
+    inputs: ["file_source"]
+    source: |
+      . = parse_syslog!(string!(.message))
+      .host = get_hostname!()
+
+# Vector sinks
+vector_sinks:
+  - type: "clickhouse"
+    name: "clickhouse_sink"
+    inputs: ["remap_transform"]
+    endpoint: "http://{{ clickhouse_host }}:{{ clickhouse_port }}"
+    database: "{{ clickhouse_database }}"
+    table: "{{ clickhouse_table }}"
+    compression: "gzip"
+    healthcheck: true
+
+# Service settings
+vector_service_enable: true
+vector_service_state: "started"

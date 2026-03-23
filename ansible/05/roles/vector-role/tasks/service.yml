@@ -1,0 +1,24 @@
+---
+- name: "Запуск и включение Vector"
+  ansible.builtin.systemd:
+    name: vector
+    state: "{{ vector_service_state }}"
+    enabled: "{{ vector_service_enable }}"
+    daemon_reload: true
+  become: true
+  register: vector_start
+  tags: [vector, service]
+
+- name: "Проверка статуса Vector"
+  ansible.builtin.command:
+    cmd: systemctl is-active vector
+  register: vector_status
+  changed_when: false
+  failed_when: vector_status.stdout != "active"
+  become: true
+  tags: [vector, verify]
+
+- name: "Вывод информации о статусе"
+  ansible.builtin.debug:
+    msg: "Vector успешно установлен и запущен"
+  tags: [vector, verify]

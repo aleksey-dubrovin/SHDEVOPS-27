@@ -1,0 +1,13 @@
+# templates/vector.service.j2
+[Unit]
+Description=Vector Log Pipeline
+After=network.target
+
+[Service]
+Type=simple
+User=vector
+ExecStart={{ vector_install_dir }}/bin/vector --config {{ vector_config_dir }}/vector.yaml
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

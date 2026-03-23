@@ -1,0 +1,20 @@
+---
+# Lighthouse settings
+lighthouse_repo: "https://github.com/VKCOM/lighthouse.git"
+lighthouse_version: "master"
+lighthouse_path: "/var/www/lighthouse"
+
+# Nginx settings
+nginx_user: "nginx"
+nginx_group: "nginx"
+nginx_config_path: "/etc/nginx/conf.d/lighthouse.conf"
+nginx_service: "nginx"
+
+# Firewall settings
+firewall_service: "firewalld"
+firewall_ports:
+  - http
+  - https
+
+# SELinux settings
+selinux_httpd_can_network_connect: true

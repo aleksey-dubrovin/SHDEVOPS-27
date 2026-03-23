@@ -1,0 +1,41 @@
+---
+- name: "Настройка SELinux для nginx"
+  ansible.builtin.command:
+    cmd: setsebool -P httpd_can_network_connect on
+  register: selinux_result
+  changed_when: selinux_result.rc == 0
+  failed_when: false
+  tags: [lighthouse, selinux]
+
+- name: "Удаление дефолтной конфигурации nginx"
+  ansible.builtin.file:
+    path: /etc/nginx/conf.d/default.conf
+    state: absent
+  ignore_errors: true
+  notify: restart nginx
+  tags: [lighthouse, nginx]
+
+- name: "Настройка nginx для Lighthouse"
+  ansible.builtin.template:
+    src: lighthouse.conf.j2
+    dest: "{{ nginx_config_path }}"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart nginx
+  tags: [lighthouse, nginx]
+
+- name: "Исправление SELinux контекста для Lighthouse"
+  ansible.builtin.command:
+    cmd: semanage fcontext -a -t httpd_sys_content_t "{{ lighthouse_path }}(/.*)?"
+  become: true
+  register: selinux_fcontext
+  changed_when: selinux_fcontext.rc == 0
+  failed_when: false
+  tags: [lighthouse, selinux]
+
+- name: "Применение SELinux контекста"
+  ansible.builtin.command:
+    cmd: restorecon -Rv {{ lighthouse_path }}
+  become: true
+  tags: [lighthouse, selinux]
