@@ -20,7 +20,7 @@
 
 3. `. hacking/env-setup`.
 
-![alt text](image-2.png)
+![alt text](image-11.png)
 
 4. `deactivate` 
 
@@ -28,7 +28,7 @@
 
 5. `. venv/bin/activate && . hacking/env-setup`.
 
-![alt text](image-3.png)
+![alt text](image-10.png)
 
 ### Основная часть
 
