@@ -1,0 +1,7 @@
+---
+- name: Use my_file_role from collection
+  hosts: localhost
+  gather_facts: yes
+  
+  roles:
+    - my_file_role

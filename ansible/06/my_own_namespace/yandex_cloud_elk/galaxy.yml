@@ -1,0 +1,19 @@
+---
+namespace: my_own_namespace
+name: yandex_cloud_elk
+version: 1.0.0
+readme: README.md
+authors:
+  - Aleksey Dubrovin <aleksey.dubrovin@example.com>
+description: Collection for Netology homework #6 - custom module for file creation
+license:
+  - GPL-3.0-or-later
+tags:
+  - netology
+  - education
+  - file
+  - module
+repository: https://github.com/aleksey-dubrovin/SHDEVOPS-27
+documentation: https://github.com/aleksey-dubrovin/SHDEVOPS-27
+homepage: https://github.com/aleksey-dubrovin/SHDEVOPS-27
+issues: https://github.com/aleksey-dubrovin/SHDEVOPS-27/issues

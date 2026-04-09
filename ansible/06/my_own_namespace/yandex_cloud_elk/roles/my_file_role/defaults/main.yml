@@ -1,0 +1,3 @@
+---
+my_module_path: /tmp/from_role_default.txt
+my_module_content: "Default content from role"
