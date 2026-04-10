@@ -53,3 +53,7 @@
 ![alt text](image-9.png)
 
 7. Принимаем изменения и отправляем в git.
+
+[Ссылка на репозиорий с коллекцией](https://github.com/aleksey-dubrovin/SHDEVOPS-27/blob/main/ansible/06/my_own_namespace/yandex_cloud_elk/README.md)
+
+[Ссылка на архив с коллекцией](https://github.com/aleksey-dubrovin/SHDEVOPS-27/blob/main/ansible/06/my_own_namespace/yandex_cloud_elk/my_own_namespace-yandex_cloud_elk-1.0.0.tar.gz)
