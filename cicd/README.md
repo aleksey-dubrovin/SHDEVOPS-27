@@ -36,3 +36,5 @@
 4. Включение сборки артефактов
 
 ![alt text](image-6.png)
+
+Форк репозиория по адресу: https://github.com/aleksey-dubrovin/example-teamcity
