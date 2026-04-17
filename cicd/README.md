@@ -27,4 +27,12 @@
 
 ![alt text](image-3.png)
 
-3. 
+3. Подготовка новой версии в branch и сборка по merge
+
+![alt text](image-5.png)
+
+![alt text](image-4.png)
+
+4. Включение сборки артефактов
+
+![alt text](image-6.png)
