@@ -2,7 +2,7 @@
 
 [Системы мониторинга](13._Системы_мониторинга.pdf)
 
-[Средство визуализации Grafana]()
+[Средство визуализации Grafana](14._Средство_визуализации_Grafana.pdf)
 
 [Система сбора логов Elastic Stack]()
 
@@ -115,4 +115,15 @@
 
 ![alt text](image-4.png)
 
-### Ссылка на репозиторий с мониторингом: https://github.com/aleksey-dubrovin/tick-monitoring
+Ссылка на репозиторий с мониторингом: https://github.com/aleksey-dubrovin/tick-monitoring
+
+## Домашнее задание к занятию «Средство визуализации Grafana»
+
+[Introduction to PromQL, the Prometheus query language](Introduction to PromQL, the Prometheus query language.html)
+
+[PromQL tutorial for beginners and humans](PromQL tutorial for beginners and humans.html)
+
+[Understanding Machine CPU usage – Robust Perception](Understanding Machine CPU usage – Robust Perception.html)
+
+1. Развернута система визуализации Grafana и добавлен источник Prometheus
+
