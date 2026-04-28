@@ -127,6 +127,42 @@
 
 1. Развернута система визуализации Grafana и добавлен источник Prometheus
 
+![alt text](image-7.png)
+
+![alt text](image-6.png)
 
 Источник, репозиторий: https://github.com/aleksey-dubrovin/grafana-prometheus
 
+2. Созданный Dashboard с заданными панелями через promql-запросы
+
+    Утилизация CPU (в процентах)
+    ```promql
+    100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)
+    ```
+    CPU Load Average (1, 5, 15 минут)
+    ```promql
+    LA 1 минута - node_load1
+    LA 5 минут - node_load5
+    LA 15 минут - node_load15
+    ```
+    Количество свободной оперативной памяти
+    ```
+    node_memory_MemFree_bytes / 1024 / 1024
+    node_memory_MemAvailable_bytes
+    ```
+    Количество свободного места на файловой системе
+    ```
+    node_filesystem_avail_bytes{mountpoint="/", fstype!="tmpfs"} / 1024 / 1024 / 1024
+    ```
+
+![alt text](image-8.png)
+
+3. Создал чат-бот для уведомлений, настроил Contact point, Notifiaction Policy и Alert rules для dashboard
+
+![alt text](image-10.png)
+
+![alt text](image-9.png)
+
+![alt text](image-11.png)
+
+4. Выгрузил настроенный dashboard в репозиторий https://github.com/aleksey-dubrovin/grafana-prometheus/blob/main/dashboards/node-exporter-dashboard.json
