@@ -119,11 +119,14 @@
 
 ## Домашнее задание к занятию «Средство визуализации Grafana»
 
-[Introduction to PromQL, the Prometheus query language](Introduction to PromQL, the Prometheus query language.html)
+[Introduction to PromQL, the Prometheus query language](IntroPromQ.html)
 
-[PromQL tutorial for beginners and humans](PromQL tutorial for beginners and humans.html)
+[PromQL tutorial for beginners and humans](PromQLtutorial.html)
 
-[Understanding Machine CPU usage – Robust Perception](Understanding Machine CPU usage – Robust Perception.html)
+[Understanding Machine CPU usage – Robust Perception](CPUusage.html)
 
 1. Развернута система визуализации Grafana и добавлен источник Prometheus
+
+
+Источник, репозиторий: https://github.com/aleksey-dubrovin/grafana-prometheus
 
