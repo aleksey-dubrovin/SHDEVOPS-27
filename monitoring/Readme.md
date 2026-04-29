@@ -181,12 +181,19 @@ https://github.com/aleksey-dubrovin/grafana-prometheus/blob/main/dashboards/node
 ## Домашнее задание к занятию «Система сбора логов Elastic Stack»
 
 [Install Elasticsearch with Docker](Install_Elasticsearch_with_Docker.html)
+
 [Sending Docker Logs to ElasticSearch and Kibana with FileBeat](Kibana_with_FileBeat.html)
+
 [Creating a Logstash Pipeline](Logstash_Pipeline.html)
+
 [Filter plugins](Logstash_Plugins.html)
+
 [Config file format](Beats_Platform.html)
+
 [Data views](Data_views.html)
+
 [Discover](Discover.html)
+
 [How to increase vm.max_map_count?](How_to_increase_vm.max_map_count.html)
 
 ### 1. Создание docker compose файла и развертывание компонентов в контейнерах
