@@ -221,3 +221,14 @@ https://github.com/aleksey-dubrovin/grafana-prometheus/blob/main/dashboards/node
 ![alt text](image-18.png)
 
 ---
+
+## Домашнее задание к занятию «Платформа мониторинга Sentry»
+
+При переходе по ссылке sentry.io отвечает 403 Forbidden. 
+Было принято решение попробовать Self-Hosted на сайте https://develop.sentry.dev/self-hosted/
+
+Локальных ресурсов таких нет, пошёл на yandex cloud. Вот что получается по стоимости исходя из системных требований:
+
+![alt text](image-19.png)
+
+Жалко как то пока тратиться, пока пропушу.
