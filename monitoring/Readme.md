@@ -1,14 +1,16 @@
 ## Мониторинг и логи
 
-[Системы мониторинга](13._Системы_мониторинга.pdf)
+    [Системы мониторинга](13._Системы_мониторинга.pdf)
 
-[Средство визуализации Grafana](14._Средство_визуализации_Grafana.pdf)
+    [Средство визуализации Grafana](14._Средство_визуализации_Grafana.pdf)
 
-[Система сбора логов Elastic Stack]()
+    [Система сбора логов Elastic Stack]()
 
-[Платформа мониторинга Sentry]()
+    [Платформа мониторинга Sentry]()
 
-[Инцидент-менеджмент]()
+    [Инцидент-менеджмент]()
+
+---
 
 ## Домашнее задание к занятию "Системы мониторинга"
 
@@ -97,41 +99,43 @@
     ![alt text](image.png)
 
     ![alt text](image-1.png)
-Оказалась не подходящая версия
+    Оказалась не подходящая версия
 
-Посмотрел структуру docker файла и сделал на соответствующих образах.
+    Посмотрел структуру docker файла и сделал на соответствующих образах.
 
-![alt text](image-2.png)
+    !   [alt text](image-2.png)
 
 8. Создал dashboard с основными системными метриками.
 
-![alt text](image-3.png)
+    ![alt text](image-3.png)
 
 9. Подключил плагины: docker, docker_log и добавил запросы в dashboard.
 
-![alt text](image-5.png)
+    ![alt text](image-5.png)
 
-Дополнительно сделал запрос на отображение журнала с запущенных контейнеров.
+    Дополнительно сделал запрос на отображение журнала с запущенных контейнеров.
 
-![alt text](image-4.png)
+    ![alt text](image-4.png)
 
-Ссылка на репозиторий с мониторингом: https://github.com/aleksey-dubrovin/tick-monitoring
+    Ссылка на репозиторий с мониторингом: https://github.com/aleksey-dubrovin/tick-monitoring
+
+---
 
 ## Домашнее задание к занятию «Средство визуализации Grafana»
 
-[Introduction to PromQL, the Prometheus query language](IntroPromQ.html)
+    [Introduction to PromQL, the Prometheus query language](IntroPromQ.html)
 
-[PromQL tutorial for beginners and humans](PromQLtutorial.html)
+    [PromQL tutorial for beginners and humans](PromQLtutorial.html)
 
-[Understanding Machine CPU usage – Robust Perception](CPUusage.html)
+    [Understanding Machine CPU usage – Robust Perception](CPUusage.html)
 
 1. Развернута система визуализации Grafana и добавлен источник Prometheus
 
-![alt text](image-7.png)
+    ![alt text](image-7.png)
 
-![alt text](image-6.png)
+    ![alt text](image-6.png)
 
-Источник, репозиторий: https://github.com/aleksey-dubrovin/grafana-prometheus
+    Источник, репозиторий: https://github.com/aleksey-dubrovin/grafana-prometheus
 
 2. Созданный Dashboard с заданными панелями через promql-запросы
 
@@ -155,14 +159,54 @@
     node_filesystem_avail_bytes{mountpoint="/", fstype!="tmpfs"} / 1024 / 1024 / 1024
     ```
 
-![alt text](image-8.png)
+    ![alt text](image-8.png)
 
 3. Создал чат-бот для уведомлений, настроил Contact point, Notifiaction Policy и Alert rules для dashboard
 
-![alt text](image-10.png)
+    ![alt text](image-10.png)
 
-![alt text](image-9.png)
+    ![alt text](image-9.png)
 
-![alt text](image-11.png)
+    ![alt text](image-11.png)
 
 4. Выгрузил настроенный dashboard в репозиторий https://github.com/aleksey-dubrovin/grafana-prometheus/blob/main/dashboards/node-exporter-dashboard.json
+
+---
+
+## Домашнее задание к занятию «Система сбора логов Elastic Stack»
+
+    [Install Elasticsearch with Docker](Install_Elasticsearch_with_Docker.html)
+    [Sending Docker Logs to ElasticSearch and Kibana with FileBeat](Kibana_with_FileBeat.html)
+    [Creating a Logstash Pipeline](Logstash_Pipeline.html)
+    [Filter plugins](Logstash_Plugins.html)
+    [Config file format](Beats_Platform.html)
+    [Data views](Data_views.html)
+    [Discover](Discover.html)
+    [How to increase vm.max_map_count?](How_to_increase_vm.max_map_count.html)
+
+1. Создание docker compose файла и развертывание компонентов в контейнерах
+
+    ![alt text](image-12.png)
+
+    Статус кластера green
+
+    ![alt text](image-13.png)
+
+    Интерфейс kibana
+
+   ![alt text](image-15.png)
+
+    Рабочий репозиторий: https://github.com/aleksey-dubrovin/elk-collector.git
+
+    Пробовал сначала сам, но так индексы и не появились. Состояние клатсера было red. заработало только на single node конфигурации.
+
+2. Добавил data view и попробовал искать по ключевым словам.
+
+    ![alt text](image-17.png)
+
+    ![alt text](image-16.png)
+
+    ![alt text](image-18.png)
+
+
+---
