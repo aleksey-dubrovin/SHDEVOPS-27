@@ -231,4 +231,4 @@ https://github.com/aleksey-dubrovin/grafana-prometheus/blob/main/dashboards/node
 
 ![alt text](image-19.png)
 
-Жалко как то пока тратиться, пропушу.
+Жалко как то пока тратиться, пропускаю.
