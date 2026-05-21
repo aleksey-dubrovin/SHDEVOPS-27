@@ -349,5 +349,92 @@ Platform V Synapse предоставляет DNS-имена для сервис
 
 Для развертывания схемы используем **Yandex Cloud** с помощью **Terraform** с указанным распределением: 3 шарда (мастера) и 3 реплики, распределённые по трём виртуальным машинам. Пример конфигурации на оффициальном сайте [Redis cluster tutorial](https://redis-doc-test.readthedocs.io/en/latest/topics/cluster-tutorial/) 
 
-Создал репозиторий [redis-cluster-yc](), указал токен для подключение и переменные для создания ВМ. Развертывание redis выполняю через скрипт указанный в metadata при создании ВМ.
+Создал репозиторий [redis-cluster-yc](https://github.com/aleksey-dubrovin/redis-cluster-yc.git), указал токен для подключение и переменные для создания ВМ. Развертывание redis выполняю через скрипт указанный в metadata (cloud-init) при создании ВМ.
 
+По результату создаются 3 виртуальных инстанса с развернутыми экземплярами redis:
+
+![alt text](image-14.png)
+--- 
+
+Запустил скрипт создания кластера/
+
+```bash
+alekseyvladch@fv4hk7f7ckapardk7t11:~$ echo "yes" | redis-cli --cluster create \
+  $VM1_IP:6379 $VM2_IP:6379 $VM3_IP:6379 \
+  $VM2_IP:6380 $VM3_IP:6380 $VM1_IP:6380 \
+  --cluster-replicas 1
+>>> Performing hash slots allocation on 6 nodes...
+Master[0] -> Slots 0 - 5460
+Master[1] -> Slots 5461 - 10922
+Master[2] -> Slots 10923 - 16383
+Adding replica 192.168.10.20:6380 to 192.168.10.22:6379
+Adding replica 192.168.10.26:6380 to 192.168.10.20:6379
+Adding replica 192.168.10.22:6380 to 192.168.10.26:6379
+M: 38af710e338b8be58ea76bb9010b83424721ede0 192.168.10.22:6379
+   slots:[0-5460] (5461 slots) master
+M: 490b542eb8fe349c9e35baf1ec6c4afcafe35312 192.168.10.20:6379
+   slots:[5461-10922] (5462 slots) master
+M: 8a2c1aca6929cc0f027c0e6caf80a46ee884496d 192.168.10.26:6379
+   slots:[10923-16383] (5461 slots) master
+S: 714d8a96caf95620ea7f12466d50d57dd78dae86 192.168.10.20:6380
+   replicates 38af710e338b8be58ea76bb9010b83424721ede0
+S: 4a6137ccc23687f38fd3c4ad37637d40c98e69eb 192.168.10.26:6380
+   replicates 490b542eb8fe349c9e35baf1ec6c4afcafe35312
+S: 2114914315e84a30f8628b88c60f8f6508a5c5df 192.168.10.22:6380
+   replicates 8a2c1aca6929cc0f027c0e6caf80a46ee884496d
+Can I set the above configuration? (type 'yes' to accept): >>> Nodes configuration updated
+>>> Assign a different config epoch to each node
+>>> Sending CLUSTER MEET messages to join the cluster
+Waiting for the cluster to join
+.
+>>> Performing Cluster Check (using node 192.168.10.22:6379)
+M: 38af710e338b8be58ea76bb9010b83424721ede0 192.168.10.22:6379
+   slots:[0-5460] (5461 slots) master
+   1 additional replica(s)
+M: 490b542eb8fe349c9e35baf1ec6c4afcafe35312 192.168.10.20:6379
+   slots:[5461-10922] (5462 slots) master
+   1 additional replica(s)
+S: 2114914315e84a30f8628b88c60f8f6508a5c5df 192.168.10.22:6380
+   slots: (0 slots) slave
+   replicates 8a2c1aca6929cc0f027c0e6caf80a46ee884496d
+M: 8a2c1aca6929cc0f027c0e6caf80a46ee884496d 192.168.10.26:6379
+   slots:[10923-16383] (5461 slots) master
+   1 additional replica(s)
+S: 4a6137ccc23687f38fd3c4ad37637d40c98e69eb 192.168.10.26:6380
+   slots: (0 slots) slave
+   replicates 490b542eb8fe349c9e35baf1ec6c4afcafe35312
+S: 714d8a96caf95620ea7f12466d50d57dd78dae86 192.168.10.20:6380
+   slots: (0 slots) slave
+   replicates 38af710e338b8be58ea76bb9010b83424721ede0
+[OK] All nodes agree about slots configuration.
+>>> Check for open slots...
+>>> Check slots coverage...
+[OK] All 16384 slots covered.
+```
+Проверяю результат правильного создания кластера и статус узлов
+
+```bash
+redis-cli -c -h 127.0.0.1 -p 6379 CLUSTER NODES
+490b542eb8fe349c9e35baf1ec6c4afcafe35312 192.168.10.20:6379@16379 master - 0 1779351688000 2 connected 5461-10922
+38af710e338b8be58ea76bb9010b83424721ede0 192.168.10.22:6379@16379 myself,master - 0 1779351689000 1 connected 0-5460
+2114914315e84a30f8628b88c60f8f6508a5c5df 192.168.10.22:6380@16380 slave 8a2c1aca6929cc0f027c0e6caf80a46ee884496d 0 1779351688000 3 connected
+8a2c1aca6929cc0f027c0e6caf80a46ee884496d 192.168.10.26:6379@16379 master - 0 1779351689664 3 connected 10923-16383
+4a6137ccc23687f38fd3c4ad37637d40c98e69eb 192.168.10.26:6380@16380 slave 490b542eb8fe349c9e35baf1ec6c4afcafe35312 0 1779351688000 2 connected
+714d8a96caf95620ea7f12466d50d57dd78dae86 192.168.10.20:6380@16380 slave 38af710e338b8be58ea76bb9010b83424721ede0 0 177redis-cli -c -h 127.0.0.1 -p 6379 CLUSTER INFO
+cluster_state:ok4hk7f7ckapardk7t11:~$ redis-cli -c -h 127.0.0.1 -p 6379 CLUSTER INFO
+cluster_slots_assigned:16384
+cluster_slots_ok:16384
+cluster_slots_pfail:0
+cluster_slots_fail:0
+cluster_known_nodes:6
+cluster_size:3
+cluster_current_epoch:6
+cluster_my_epoch:1
+cluster_stats_messages_ping_sent:53
+cluster_stats_messages_pong_sent:52
+cluster_stats_messages_sent:105
+cluster_stats_messages_ping_received:47
+cluster_stats_messages_pong_received:53
+cluster_stats_messages_meet_received:5
+cluster_stats_messages_received:105
+```
