@@ -54,3 +54,4 @@
 ![alt text](image-4.png)
 ---
 
+Ссылка на решение https://github.com/netology-code/kuber-homeworks_1.1_reference_03.25/blob/main/README.md
