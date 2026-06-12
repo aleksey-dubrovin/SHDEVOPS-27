@@ -55,11 +55,3 @@
 ---
 
 Ссылка на решение от Netology: https://github.com/netology-code/kuber-homeworks_1.1_reference_03.25/blob/main/README.md
-
-## Домашнее задание к занятию «Базовые объекты K8S»
-
-Для выполнения задания используем ранее созданный кластер на базе microk3s в Yandex cloud из репозитория:
-https://github.com/aleksey-dubrovin/yandex-k8s.git.
-
-### Задание 1. Создать Pod с именем hello-world
-
