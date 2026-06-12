@@ -2,17 +2,17 @@
 
 [Kubernetes. Причины появления. Команда kubectl](SHKUBER-9__Kubernetes._Причины_появления._Команда_kubectl.pdf)
 
-[Базовые объекты K8S]()
+[Базовые объекты K8S](Базовые_объекты_K8s.pdf)
 
-[Запуск приложений в K8S]()
+[Запуск приложений в K8S](Запуск_приложений_в_K8s.pdf)
 
-[Сетевое взаимодействие в Kubernetes]()
+[Сетевое взаимодействие в Kubernetes](Сетевое_взаимодействие_в_K8s.pdf)
 
-[Хранение в K8s]()
+[Хранение в K8s](Хранение_в_K8s.pdf)
 
-[Настройка приложений]()
+[Настройка приложений](Настройка_приложений_и_управление_доступом.pdf)
 
-[Helm]()
+[Helm](shkuber-27_Helm.pdf)
 
 [Компоненты Kubernetes]()
 
@@ -24,8 +24,8 @@
 
 [Troubleshooting]()
 
-## Домашнее задание к занятию «Kubernetes. Причины появления. Команда kubectl»
 
+## Домашнее задание к занятию «Kubernetes. Причины появления. Команда kubectl»
 Для выполнения задания развертывания решил использовать ВМ в облаке Yandex Cloud. С помощью инструмента terraform и готовых команд установки microk8s на сайте поддержки, через cloud-init выполняется первоначальная установка необходимых компонентов. Инструкцию по развертыванию можно посмотреть в репозитории: https://github.com/aleksey-dubrovin/yandex-k8s/blob/main/README.md
 
 ### Задание 1. Установка MicroK8S
@@ -54,4 +54,12 @@
 ![alt text](image-4.png)
 ---
 
-Ссылка на решение https://github.com/netology-code/kuber-homeworks_1.1_reference_03.25/blob/main/README.md
+Ссылка на решение от Netology: https://github.com/netology-code/kuber-homeworks_1.1_reference_03.25/blob/main/README.md
+
+## Домашнее задание к занятию «Базовые объекты K8S»
+
+Для выполнения задания используем ранее созданный кластер на базе microk3s в Yandex cloud из репозитория:
+https://github.com/aleksey-dubrovin/yandex-k8s.git.
+
+### Задание 1. Создать Pod с именем hello-world
+
