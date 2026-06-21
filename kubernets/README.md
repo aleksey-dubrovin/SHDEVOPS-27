@@ -55,3 +55,4 @@
 ---
 
 Ссылка на решение от Netology: https://github.com/netology-code/kuber-homeworks_1.1_reference_03.25/blob/main/README.md
+Список выполненных домашних заданий: https://github.com/aleksey-dubrovin/kuber-homeworks
