@@ -14,7 +14,7 @@
 
 [Helm](shkuber-27_Helm.pdf)
 
-[Компоненты Kubernetes]()
+[Компоненты Kubernetes](Компоненты_Kubernetes.pdf)
 
 [Установка Kubernetes с помощью kubeadm, kubespray]()
 
