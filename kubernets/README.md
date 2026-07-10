@@ -16,7 +16,7 @@
 
 [Компоненты Kubernetes](Компоненты_Kubernetes.pdf)
 
-[Установка Kubernetes с помощью kubeadm, kubespray]()
+[Установка Kubernetes с помощью kubeadm,kubespray](Установка_Kubernetes.pdf)
 
 [Как работает сеть в K8S]()
 
