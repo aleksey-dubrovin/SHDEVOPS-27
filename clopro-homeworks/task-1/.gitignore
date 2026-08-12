@@ -1,0 +1,36 @@
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+terraform.tfvars
+*.tfvars
+
+# Секреты и переменные окружения
+docker-compose/.env
+docker-compose/*.key
+.env
+*.env
+.env
+*.env
+secrets/
+*.pem
+*.key
+*.crt
+
+# Логи
+*.log
+
+# Docker
+**/mosquitto/config/passwd
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
