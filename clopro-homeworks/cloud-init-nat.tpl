@@ -26,12 +26,13 @@ write_files:
       table ip nat {
         chain prerouting {
           type nat hook prerouting priority filter; policy accept;
-            # Автоматический проброс портов 2222 на внутренние порты 22
+            # Автоматический проброс портов на внутренние порты
             tcp dport 2222 dnat ip to 192.168.20.10:22
+            tcp dport 80 dnat ip to 192.168.10.11:80
         }
         chain postrouting {
           type nat hook postrouting priority srcnat; policy accept;
-            # Маскарадинг для всей внутренней подсети
+          # Маскарадинг для всей внутренней подсети
             oif "eth0" masquerade
         }
       }
