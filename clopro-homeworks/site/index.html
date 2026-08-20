@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Безопасность в облачных провайдерах</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f7fa;
+            color: #2c3e50;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: #1a1a2e;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin: 0;
+        }
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.8;
+        }
+        .slide {
+            background: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border-left: 6px solid #4a90e2;
+        }
+        .slide h2 {
+            color: #1a1a2e;
+            border-bottom: 2px solid #eaeef2;
+            padding-bottom: 15px;
+            margin-top: 0;
+            font-size: 1.8em;
+        }
+        .slide ul {
+            list-style: none;
+            padding: 0;
+        }
+        .slide ul li {
+            padding: 8px 0;
+            padding-left: 30px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%234a90e2" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>') left center no-repeat;
+            background-size: 20px;
+        }
+        .slide img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid #eaeef2;
+        }
+        .slide .highlight {
+            background: #f0f4ff;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        .tag {
+            display: inline-block;
+            background: #4a90e2;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-right: 8px;
+        }
+        @media (max-width: 600px) {
+            .header h1 { font-size: 1.8em; }
+            .slide { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>☁️ Безопасность в облачных провайдерах</h1>
+            <p>Лекция по Yandex Cloud | Нетология</p>
+        </div>
+
+        <!-- Блок 1: IAM -->
+        <div class="slide">
+            <h2>🔐 Identity Access Management (IAM)</h2>
+            <p>Централизованный сервис управления доступом к облачным ресурсам.</p>
+            <ul>
+                <li><strong>Users</strong> — аккаунты Яндекс, сервисные аккаунты, федеративные.</li>
+                <li><strong>Groups</strong> — объединение пользователей (в т.ч. allAuthenticatedUsers, allUsers).</li>
+                <li><strong>Polices</strong> — правила разрешений.</li>
+                <li><strong>Roles</strong> — примитивные (admin, editor, viewer) и сервисные.</li>
+            </ul>
+            <div class="highlight">
+                <span class="tag">Пример</span> Сервисный аккаунт <code>storage-sa</code> с ролью <code>storage.admin</code> для управления бакетами.
+            </div>
+        </div>
+
+        <!-- Блок 2: SSO -->
+        <div class="slide">
+            <h2>🔄 Single Sign-On (SSO)</h2>
+            <p>Пользователь переходит из одной системы в другую без повторной аутентификации.</p>
+            <ul>
+                <li>Единый административный интерфейс.</li>
+                <li>Поддержка SAML.</li>
+                <li>Быстрый доступ к нескольким аккаунтам и приложениям.</li>
+            </ul>
+        </div>
+
+        <!-- Блок 3: KMS -->
+        <div class="slide">
+            <h2>🗝️ Key Management Service (KMS)</h2>
+            <p>Создание и управление ключами шифрования (Customer Master Keys).</p>
+            <ul>
+                <li>Ключи генерируются внутри аппаратных модулей (HSM).</li>
+                <li>Не могут быть экспортированы.</li>
+                <li>Интеграция с Object Storage, Kubernetes, Certificate Manager.</li>
+                <li>Поддержка симметричных и асимметричных ключей.</li>
+            </ul>
+            <div class="highlight">
+                <span class="tag">В проекте</span> Создан ключ <code>bucket-encryption-key</code> для шифрования бакета с картинками.
+            </div>
+        </div>
+
+        <!-- Блок 4: Шифрование бакетов -->
+        <div class="slide">
+            <h2>📦 Шифрование бакета S3</h2>
+            <p>Объекты могут шифроваться:</p>
+            <ul>
+                <li><strong>На стороне клиента</strong> — до загрузки.</li>
+                <li><strong>На лету</strong> — через SSL/TLS.</li>
+                <li><strong>На стороне облака</strong> — SSE-S3, SSE-KMS, SSE-C.</li>
+            </ul>
+            <p>В Yandex Cloud используется <strong>SSE-KMS</strong>.</p>
+                <img src="https://storage.yandexcloud.net/www.dubrovins.ru/picture.jpg" alt="Пример картинки из бакета">
+            <p style="font-size: 0.9em; color: #7f8c8d;">Пример картинки, загруженной в бакет сайта (не зашифрован).</p>
+        </div>
+
+        <!-- Блок 5: Certificate Manager -->
+        <div class="slide">
+            <h2>📜 Certificate Manager</h2>
+            <p>Сервис получения и управления SSL/TLS-сертификатами.</p>
+            <ul>
+                <li>Бесплатные сертификаты от Let's Encrypt.</li>
+                <li>Интеграция с Object Storage (HTTPS-хостинг), Application Load Balancer, API Gateway.</li>
+                <li>Централизованное управление и аудит.</li>
+            </ul>
+            <div class="highlight">
+                <span class="tag">Реализовано</span> Получен сертификат для домена <code>dubrovins.ru</code> и поддоменов. Сайт доступен по HTTPS 🔒.
+            </div>
+        </div>
+
+        <!-- Блок 6: Итоги -->
+        <div class="slide">
+            <h2>📌 Итоги</h2>
+            <ul>
+                <li>Изучили IAM — управление пользователями и ролями.</li>
+                <li>Познакомились с KMS — ключи шифрования и их применение.</li>
+                <li>Настроили шифрование бакета с помощью KMS.</li>
+                <li>Создали статический сайт с HTTPS через Certificate Manager.</li>
+                <li>Обеспечили безопасность данных и защищённое соединение.</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            © 2026 Нетология · Образовательный проект
+        </div>
+    </div>
+</body>
+</html>

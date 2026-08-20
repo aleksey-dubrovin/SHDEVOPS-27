@@ -22,3 +22,7 @@ output "image_url" {
 output "alb_url" {
   value = "http://${yandex_compute_instance.nat_instance.network_interface[0].nat_ip_address}/"
 }
+
+output "site_bucket_name" {
+  value = yandex_storage_bucket.site.bucket
+}
