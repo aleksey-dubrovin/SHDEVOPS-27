@@ -25,6 +25,9 @@ data "yandex_compute_image" "nat-instance" {
   family = "nat-instance-ubuntu-2204"
 }
 
+data "yandex_compute_image" "lamp" {
+  image_id = var.lamp_image_id
+}
 # ======================== СЕТЬ ========================
 
 resource "yandex_vpc_network" "clopro" {
@@ -45,6 +48,15 @@ resource "yandex_vpc_subnet" "private_subnet" {
   zone           = var.yc_zone
   network_id     = yandex_vpc_network.clopro.id
   v4_cidr_blocks = ["192.168.20.0/24"]
+  route_table_id = yandex_vpc_route_table.private_route.id
+}
+
+# Новая приватная подсеть для балансировщиков и группы ВМ
+resource "yandex_vpc_subnet" "lb_private_subnet" {
+  name           = "lb-private-subnet"
+  zone           = var.yc_zone
+  network_id     = yandex_vpc_network.clopro.id
+  v4_cidr_blocks = ["192.168.30.0/24"]
   route_table_id = yandex_vpc_route_table.private_route.id
 }
 
@@ -81,11 +93,31 @@ resource "yandex_vpc_security_group" "nat_sg" {
     v4_cidr_blocks = ["0.0.0.0/0"]
     port           = 2222
   }
- 
+
+  ingress {
+    protocol       = "TCP"
+    description    = "HTTP to NLB (via NAT)"
+    v4_cidr_blocks = ["0.0.0.0/0"]
+    port           = 80
+  } 
+
+  ingress {
+    protocol       = "TCP"
+    description    = "HTTP to ALB (via NAT)"
+    v4_cidr_blocks = ["0.0.0.0/0"]
+    port           = 8080
+  }
+
   ingress {
     protocol       = "ANY"
     description    = "Allow all internal traffic"
     v4_cidr_blocks = ["192.168.20.0/24"]
+  }
+
+  ingress {
+    protocol       = "ANY"
+    description    = "Allow all internal traffic"
+    v4_cidr_blocks = ["192.168.30.0/24"]
   }
 
   egress {
@@ -95,7 +127,6 @@ resource "yandex_vpc_security_group" "nat_sg" {
   }
 }
 
-# ВМ брокера
 resource "yandex_vpc_security_group" "private_sg" {
   name        = "private-security-group"
   description = "Security group for private VM"
@@ -106,6 +137,35 @@ resource "yandex_vpc_security_group" "private_sg" {
     protocol       = "ANY"
     description    = "Allow all internal traffic"
     v4_cidr_blocks = ["192.168.10.0/24"]
+  }
+
+  egress {
+    protocol       = "ANY"
+    description    = "Allow all outgoing"
+    v4_cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "yandex_vpc_security_group" "lb_sg" {
+  name        = "lb-instance-sg"
+  description = "Allow HTTP from internal subnet"
+  network_id  = yandex_vpc_network.clopro.id
+
+  ingress {
+    protocol       = "ANY"
+    description    = "Allow all internal traffic"
+    v4_cidr_blocks = ["192.168.10.0/24"]
+  }
+
+  ingress {
+    protocol       = "TCP"
+    port           = 80
+    v4_cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    protocol          = "TCP"
+    predefined_target = "loadbalancer_healthchecks"
   }
 
   egress {
@@ -132,7 +192,7 @@ resource "yandex_compute_instance" "nat_instance" {
   boot_disk {
     initialize_params {
       image_id = data.yandex_compute_image.nat-instance.id
-      size     = 10
+      size     = var.nat_vm_disk_size
       type     = "network-hdd"
     }
   }
