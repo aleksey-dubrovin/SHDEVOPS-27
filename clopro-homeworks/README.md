@@ -6,9 +6,9 @@
 
 | Домашнее задание | Описание | Файл |
 |------------------|----------|------|
-| **ДЗ 1** | Организация сети. VPC, NAT, клиентская ВМ. | [README_HW1.md](README_HW1.md) |
-| **ДЗ 2** | Вычислительные мощности. Балансировщики нагрузки. Instance Groups, NLB, ALB. | [README_HW2.md](README_HW2.md) |
-| **ДЗ 3** | Безопасность в облачных провайдерах. KMS, шифрование бакета, статический сайт с HTTPS. | [README_HW3.md](README_HW3.md) |
+| **ДЗ 1** | Организация сети. VPC, NAT, клиентская ВМ. | [task-1.md](task-1.md) |
+| **ДЗ 2** | Вычислительные мощности. Балансировщики нагрузки. Instance Groups, NLB, ALB. | [task-2.md](task-2.md) |
+| **ДЗ 3** | Безопасность в облачных провайдерах. KMS, шифрование бакета, статический сайт с HTTPS. | [task-3.md](task-3.md) |
 
 ## Инфраструктура
 
@@ -30,5 +30,5 @@
 
 ## Ссылки
 
-- [Репозиторий](https://github.com/aleksey-dubrovin/SHDEVOPS-27/clopro-homeworks)
+- [Репозиторий](https://github.com/aleksey-dubrovin/SHDEVOPS-27/tree/main/clopro-homeworks)
 - [Yandex Cloud](https://cloud.yandex.ru/)
