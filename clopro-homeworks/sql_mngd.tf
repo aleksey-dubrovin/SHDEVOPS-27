@@ -1,4 +1,5 @@
-# Добавляем три приватные подсети для MySQL
+# ==================== ПОДСЕТИ ДЛЯ MYSQL (PRIVATE) ====================
+
 resource "yandex_vpc_subnet" "mysql_private_a" {
   name           = "mysql-private-a"
   zone           = "ru-central1-a"
@@ -23,37 +24,35 @@ resource "yandex_vpc_subnet" "mysql_private_c" {
   route_table_id = yandex_vpc_route_table.private_route.id
 }
 
-# Кластер MySQL
-resource "yandex_mdb_mysql_cluster_v2" "mysql" {
+# MySQL кластер
+resource "yandex_mdb_mysql_cluster" "mysql" {
   name        = "mysql-cluster"
   description = "MySQL cluster for netology_db"
-  environment = "PRESTABLE"                    # Prestable окружение
+  environment = "PRESTABLE"
   network_id  = yandex_vpc_network.clopro.id
   version     = "8.0"
 
-  # 3 хоста в разных зонах
-  hosts = {
-    host-a = {
-      zone             = "ru-central1-a"
-      subnet_id        = yandex_vpc_subnet.mysql_private_a.id
-      assign_public_ip = false
-    }
-    host-b = {
-      zone             = "ru-central1-b"
-      subnet_id        = yandex_vpc_subnet.mysql_private_b.id
-      assign_public_ip = false
-    }
-    host-c = {
-      zone             = "ru-central1-c"
-      subnet_id        = yandex_vpc_subnet.mysql_private_c.id
-      assign_public_ip = false
-    }
+  resources {
+    resource_preset_id = "b1.medium"    # Intel Broadwell, 50% CPU
+    disk_type_id       = "network-ssd"
+    disk_size          = 20              # 20 ГБ
   }
 
-  resources {
-    resource_preset_id = "b1.medium"           # Intel Broadwell, 50% CPU
-    disk_type_id       = "network-ssd"
-    disk_size          = 20                    # 20 ГБ
+  # Правильный способ задать хосты в трёх разных зонах
+  host {
+    zone             = "ru-central1-a"
+    subnet_id        = yandex_vpc_subnet.mysql_private_a.id
+    assign_public_ip = false
+  }
+  host {
+    zone             = "ru-central1-b"
+    subnet_id        = yandex_vpc_subnet.mysql_private_b.id
+    assign_public_ip = false
+  }
+  host {
+    zone             = "ru-central1-c"
+    subnet_id        = yandex_vpc_subnet.mysql_private_c.id
+    assign_public_ip = false
   }
 
   backup_window_start {
@@ -61,13 +60,12 @@ resource "yandex_mdb_mysql_cluster_v2" "mysql" {
     minutes = 59
   }
 
-  deletion_protection = true                   # защита от удаления
-
   maintenance_window {
-    type = "ANYTIME"                           # произвольное время
+    type = "ANYTIME"   # произвольное время
   }
 
-  # Доступ через Web SQL (для удобства)
+  deletion_protection = true
+
   access {
     web_sql = true
   }
@@ -75,15 +73,16 @@ resource "yandex_mdb_mysql_cluster_v2" "mysql" {
 
 # База данных
 resource "yandex_mdb_mysql_database" "netology_db" {
-  cluster_id = yandex_mdb_mysql_cluster_v2.mysql.id
+  cluster_id = yandex_mdb_mysql_cluster.mysql.id   # <-- исправлено: убрано _v2
   name       = "netology_db"
 }
 
 # Пользователь
 resource "yandex_mdb_mysql_user" "db_user" {
-  cluster_id = yandex_mdb_mysql_cluster_v2.mysql.id
-  name       = var.mysql_user                  # задать в переменных
-  password   = var.mysql_password              # задать в переменных (sensitive)
+  cluster_id = yandex_mdb_mysql_cluster.mysql.id   # <-- исправлено: убрано _v2
+  name       = var.mysql_user
+  password   = var.mysql_password
+
   permission {
     database_name = yandex_mdb_mysql_database.netology_db.name
     roles         = ["ALL"]

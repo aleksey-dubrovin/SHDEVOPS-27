@@ -42,15 +42,15 @@ resource "yandex_kubernetes_cluster" "k8s" {
     regional {
       # 3 master-ноды в разных зонах
       region = "ru-central1"
-      locations {
+      location {
         zone      = "ru-central1-a"
         subnet_id = yandex_vpc_subnet.k8s_public_a.id
       }
-      locations {
+      location {
         zone      = "ru-central1-b"
         subnet_id = yandex_vpc_subnet.k8s_public_b.id
       }
-      locations {
+      location {
         zone      = "ru-central1-c"
         subnet_id = yandex_vpc_subnet.k8s_public_c.id
       }

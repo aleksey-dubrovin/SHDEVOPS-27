@@ -154,3 +154,16 @@ variable "storage_secret_key" {
   description = "Static secret key for Object Storage"
   sensitive   = true
 }
+
+# ==================== MYSQL MNGD ====================
+variable "mysql_user" {
+  description = "MySQL user name"
+  type        = string
+  default     = "netology_user"
+}
+
+variable "mysql_password" {
+  description = "MySQL user password"
+  type        = string
+  sensitive   = true
+}
