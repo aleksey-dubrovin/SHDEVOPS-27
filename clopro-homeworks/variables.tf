@@ -139,3 +139,18 @@ variable "alb_internal_ip" {
   description = "Internal IP address for Application Load Balancer"
   default     = "192.168.10.11"
 }
+# ==================== SITE NAME (DNS name) ====================
+variable "site_name" {
+  description = "Domain name for site"
+  default     = "www.dubrovins.ru"
+}
+
+variable "storage_access_key" {
+  description = "Static access key for Object Storage"
+  sensitive   = true
+}
+
+variable "storage_secret_key" {
+  description = "Static secret key for Object Storage"
+  sensitive   = true
+}
