@@ -19,8 +19,9 @@
   работы: я продемонстрировал, что умею работать с гибридной
   инфраструктурой.
 
-**Место для скриншота 13:** консоль Managed Kubernetes, страница
-кластера `diplom-k8s` с региональным мастером.
+**Консоль Managed Kubernetes:**
+
+![Консоль Managed Kubernetes](images/11-k8s_master.png)
 
 ## 2.2 Региональный мастер
 
@@ -55,8 +56,9 @@ resource "yandex_kubernetes_cluster" "this" {
 Мастер размещён в управляющих подсетях `10.0.7.0/24`, `10.0.8.0/24`,
 `10.0.9.0/24` — по одной в каждой зоне.
 
-**Место для скриншота 14:** консоль кластера, вкладка «Мастер», список
-мастер-локаций в трёх зонах.
+**Консоль Managed Kubernetes workers:**
+
+![Консоль Managed Kubernetes workers](images/12-k8s_workers.png)
 
 ## 2.3 Туннельный режим Cilium
 
@@ -82,8 +84,9 @@ VXLAN-инкапсуляция добавляет 50 байт служебных
 это через `cilium-config` ConfigMap, установив MTU = 1450. После
 перезапуска Cilium поды на разных узлах начали общаться без потерь.
 
-**Место для скриншота 15:** вывод `kubectl get pods -n kube-system`
-с подами `cilium-*` и `cilium-operator-*`.
+**Консоль рабочей нагрузки:**
+
+![Консоль рабочей нагрузки](images/13-k8s_pods.png)
 
 ## 2.4 Подключение внешних worker-узлов
 
@@ -134,8 +137,9 @@ resource "yandex_compute_instance" "worker" {
 }
 ```
 
-**Место для скриншота 16:** консоль Compute Cloud со списком трёх ВМ
-(bastion, worker-a, worker-b).
+**Консоль Compute Cloud:**
+
+![Консоль Compute Cloud](images/14-compute_vm.png)
 
 ### Генерация манифеста NodeGroup
 
@@ -184,11 +188,9 @@ spec:
 `NodeGroup`. Кластер заходит на каждый узел по SSH, устанавливает
 компоненты и регистрирует узлы.
 
-**Место для скриншота 17:** вывод `kubectl get nodes` с двумя узлами
-в статусе `Ready`.
+**Консоль github с workflow external nodes:**
 
-**Место для скриншота 18:** вывод `kubectl get pods -n kube-system`
-с подами `cilium-*`, `kube-proxy-*`, `kubelet` на внешних узлах.
+![Консоль github с workflow external nodes](images/15-nodes_apply.png)
 
 ## 2.5 Bastion-хост
 
@@ -226,8 +228,6 @@ Host diplom-worker-b
 
 Это позволяет подключаться к worker-узлам одной командой
 `ssh diplom-worker-a`, при этом трафик автоматически идёт через bastion.
-
-**Место для скриншота 19:** вывод `ssh diplom-worker-a "hostname"`.
 
 ## 2.6 Network Load Balancer и Ingress NGINX
 
@@ -317,10 +317,13 @@ controller:
 - `externalTrafficPolicy: Cluster` — в отличие от `Local`, работает
   без healthCheckNodePort, что упрощает SG.
 
-**Место для скриншота 20:** вывод `kubectl get svc -n ingress-nginx`.
+**Консоль Kubernetes services:**
 
-**Место для скриншота 21:** консоль NLB, целевая группа с двумя
-узлами в статусе `HEALTHY`.
+![Консоль Kubernetes services](images/16-k8s_svc.png)
+
+**Консоль Балансировщики:**
+
+![Консоль Балансировщики](images/17-k8s_nlb.png)
 
 ## 2.7 Хранение секретов кластера
 
@@ -356,9 +359,9 @@ secrets:
     passwordFromEnv: YC_SA_KEY_JSON
 ```
 
-**Место для скриншота 22:** содержимое `config/secrets/registry.yaml`.
+**Консоль Kubernetes secrets:**
 
-**Место для скриншота 23:** вывод `kubectl get secrets -A | grep -v kube-`.
+![Консоль Kubernetes secrets](images/18-k8s_secrets.png)
 
 ## 2.8 Итоги главы
 

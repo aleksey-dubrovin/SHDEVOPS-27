@@ -31,4 +31,3 @@
 21. Репозиторий дипломного проекта — инфраструктура: https://github.com/aleksey-dubrovin/devops-diplom-infra
 22. Репозиторий дипломного проекта — Kubernetes: https://github.com/aleksey-dubrovin/devops-diplom-k8s
 23. Репозиторий дипломного проекта — приложение: https://github.com/aleksey-dubrovin/devops-diplom-app
-24. Пример решения дипломной работы (alumni): https://github.com/AlexeyD3/devops-diplom-yandexcloud

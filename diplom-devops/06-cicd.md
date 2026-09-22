@@ -94,11 +94,9 @@ terraform init \
 Это ускорило запуски с 3–4 минут до 1–1.5 минут. Особенно важно
 для итеративной разработки, когда workflow запускается часто.
 
-**Место для скриншота 46:** успешный запуск `Deploy Infrastructure`
-с временем выполнения.
+**Консоль github workflow caches:**
 
-**Место для скриншота 47:** diff в PR со строками `+` и `-` от
-terraform plan.
+![Консоль github workflow caches](images/32-cicd_cache.png)
 
 ## 5.3 CI/CD для K8s конфигурации
 
@@ -143,11 +141,6 @@ Workflow читает реестр и для каждого Secret'а вызыв
 (`kubectl create secret generic` или `kubectl create secret docker-registry`).
 Все значения берутся из GitHub Secrets через переменные окружения
 с префиксом `SECRET_`.
-
-**Место для скриншота 48:** содержимое `config/secrets/registry.yaml`.
-
-**Место для скриншота 49:** лог workflow `K8s Config` со списком
-созданных Secret'ов.
 
 ### 5.3.2 k8s-apply.yml
 
@@ -201,10 +194,9 @@ release и подождёт готовности.
   предотвращает частично установленные системы.
 - **Кэш Helm-репозиториев** — ускоряет повторные запуски.
 
-**Место для скриншота 50:** содержимое `helm/charts.yaml`.
+**Консоль github workflow k8s-helm:**
 
-**Место для скриншота 51:** успешный запуск `K8s Helm` с логами
-установки обоих чартов.
+![Консоль github workflow k8s-helm](images/33-helm_charts.png)
 
 ### 5.3.4 deploy.yml
 
@@ -239,8 +231,9 @@ release и подождёт готовности.
 Далее workflow применяет отрендеренные файлы и ждёт rollout обоих
 Deployment'ов: `diplom-app` и `max-bot`.
 
-**Место для скриншота 52:** успешный запуск `Deploy App` с логами
-envsubst-рендера и применения.
+**Успешный запуск `Deploy App`:**
+
+![Консоль github workflow k8s-helm](images/34-deploy_app.png)
 
 ## 5.4 CI/CD для приложения
 
@@ -325,9 +318,6 @@ cache-to: type=gha,mode=max
 
 Весь путь от коммита до продакшена занимает 5–7 минут и не требует
 ручных действий.
-
-**Место для скриншота 53:** скриншот с двумя параллельными запусками
-workflow: `Release` в app-репо и `Deploy App` в k8s-репо.
 
 ## 5.6 Разделение секретов
 

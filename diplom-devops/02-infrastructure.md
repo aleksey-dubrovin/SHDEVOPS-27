@@ -13,7 +13,7 @@
 
 Структура репозитория:
 
-```text
+```plaintext
 devops-diplom-infra/
 ├── backend/                    # создание S3-бакета и сервисного аккаунта
 │   ├── main.tf
@@ -34,9 +34,6 @@ devops-diplom-infra/
     ├── compute/                # bastion и worker-узлы
     └── observability/          # Audit Trails и Logging Group
 ```
-
-**Место для скриншота 3:** дерево репозитория `devops-diplom-infra`
-(можно `tree -L 2`).
 
 ## 1.2 Сервисный аккаунт и права доступа
 
@@ -62,8 +59,9 @@ devops-diplom-infra/
 | `dns.editor` | Управление DNS-зоной |
 | `audit-trails.editor` | Создание трейлов аудита |
 
-**Место для скриншота 4:** консоль Yandex Cloud, раздел IAM →
-сервисный аккаунт `avdubrovin-prod` со списком ролей.
+**Консоль Yandex Cloud, раздел IAM:**
+
+![Консоль Yandex Cloud, раздел IAM](images/03-service_account.png)
 
 ## 1.3 Backend Terraform в S3
 
@@ -105,8 +103,9 @@ terraform {
 Параметры `skip_*` обязательны при работе с S3-совместимым хранилищем,
 не поддерживающим полный набор AWS API.
 
-**Место для скриншота 5:** консоль Object Storage, бакет
-`devops-diplom-tf-...` с файлом `infra.tfstate`.
+**Консоль Object Storage, бакет**
+
+![Консоль Object Storage, бакет](images/04-object_storage.png)
 
 ## 1.4 Модуль VPC
 
@@ -128,7 +127,9 @@ Managed Kubernetes.
 - **Приватный эндпоинт S3** — чтобы трафик к Object Storage не выходил
   в интернет и не тарифицировался как исходящий.
 
-**Место для скриншота 6:** консоль VPC, список подсетей с CIDR и зонами.
+**Карта инфраструктуры:**
+
+![Карта инфраструктуры](images/05-vpc_groups.png)
 
 ## 1.5 Модуль Security Groups
 
@@ -145,8 +146,9 @@ Managed Kubernetes.
 с `predefined_target = "loadbalancer_healthchecks"`. Без него NLB не
 может проверять состояние узлов и остаётся в статусе `INACTIVE`.
 
-**Место для скриншота 7:** консоль Security Groups со списком правил
-в группе `sg-k8s-workers`.
+**Консоль Security Groups:**
+
+![Консоль Security Groups](images/06-sg_groups.png)
 
 ## 1.6 Container Registry
 
@@ -165,8 +167,9 @@ resource "yandex_container_registry" "diplom" {
 загружать образы, а worker-узлам — скачивать их через
 `imagePullSecret`.
 
-**Место для скриншота 8:** консоль Container Registry, список образов
-(`devops-diplom-app`, `max-bot`).
+**Консоль Container Registry:**
+
+![Консоль Container Registry](images/07-cr_valunrabilities.png)
 
 ## 1.7 Audit Trails и Logging Group
 
@@ -184,11 +187,9 @@ Logging Group. Настроен сбор событий для всей папк
 Чтобы трейл мог собирать события, сервисному аккаунту добавлены
 роли `audit-trails.editor` на папку и `audit-trails.viewer` на организацию.
 
-**Место для скриншота 9:** консоль Cloud Logging, группа
-`diplom-k8s-logs` с записями.
+**Консоль Cloud Logging:**
 
-**Место для скриншота 10:** консоль Audit Trails, трейл
-`diplom-audit-trail` со списком событий.
+![Консоль Cloud Logging](images/08-cloud_logging.png)
 
 ## 1.8 Применение инфраструктуры через CI/CD
 
@@ -207,10 +208,13 @@ Workflow `.github/workflows/infrastructure.yml` запускается при п
 - `YC_ACCESS_KEY`, `YC_SECRET_KEY` — для S3 backend
 - `YC_CLOUD_ID`, `YC_FOLDER_ID`, `TF_BUCKET_NAME`
 
-**Место для скриншота 11:** вкладка Actions на GitHub, успешный запуск
-`Deploy Infrastructure`.
+**Вкладка Actions на GitHub:**
 
-**Место для скриншота 12:** вывод `terraform plan` из логов workflow.
+![Вкладка Actions на GitHub](images/09-workflows_infra.png)
+
+**Вывод `terraform plan` из workflow:** вывод `terraform plan` из логов workflow.
+
+![Вывод `terraform plan` из workflow](images/10-terraform_plan.png)
 
 ## 1.9 Использованные приёмы
 

@@ -11,7 +11,7 @@
 Приложение размещено в отдельном репозитории `devops-diplom-app`.
 Структура:
 
-```
+```text
 devops-diplom-app/
 ├── app/
 │   ├── Dockerfile
@@ -31,8 +31,9 @@ devops-diplom-app/
 код — постоянно. Разделение даёт чистую историю и правильные триггеры
 для CI/CD.
 
-**Место для скриншота 24:** страница репозитория `devops-diplom-app`
-на GitHub.
+**Консоль github workflows app:**
+
+![Консоль github workflows app](images/19-workflows_app.png)
 
 ## 3.2 Статическая страница
 
@@ -74,8 +75,9 @@ nginx без дополнительной логики.
 </html>
 ```
 
-**Место для скриншота 25:** страница `https://app.dubrovins.ru`
-в браузере.
+**Отображение приложения в браузере:**
+
+![Отображение приложения в браузере](images/20-site_app.png)
 
 ## 3.3 Dockerfile
 
@@ -100,8 +102,6 @@ HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
 - **Копирование только `index.html`** — не тащим ничего лишнего.
 - **`HEALTHCHECK`** — хотя в Kubernetes используются свои probes,
   healthcheck полезен при локальном запуске через `docker run`.
-
-**Место для скриншота 26:** содержимое `app/Dockerfile`.
 
 ## 3.4 Локальная проверка
 
@@ -142,9 +142,9 @@ resource "yandex_container_registry" "diplom" {
 
 Адрес реестра: `cr.yandex/crph52se6qjtjg937i7h`.
 
-**Место для скриншота 27:** консоль Container Registry, список
-образов. Видны `devops-diplom-app` (теги `latest`, `v0.1.0`, `sha-xxxx`)
-и `max-bot` (тег `latest`).
+**Версии приложения devops-diplom-app:**
+
+![Версии приложения devops-diplom-app](images/21-app_tags.png)
 
 ## 3.6 Публикация образа вручную
 
@@ -162,8 +162,6 @@ docker push cr.yandex/crph52se6qjtjg937i7h/devops-diplom-app:v0.1.0
 
 После этого образ появился в реестре, и я смог приступить к настройке
 автоматической сборки через GitHub Actions.
-
-**Место для скриншота 28:** вывод `yc container image list --registry-id ...`.
 
 ## 3.7 Автоматическая сборка через GitHub Actions
 
@@ -199,11 +197,9 @@ docker push cr.yandex/crph52se6qjtjg937i7h/devops-diplom-app:v0.1.0
   тег на основе коммита. Это позволяет при необходимости откатиться
   к конкретной версии.
 
-**Место для скриншота 29:** успешный запуск workflow `Build and Push`
-в GitHub Actions.
+**Консоль github workflow build and push:**
 
-**Место для скриншота 30:** лог шага `Build and push` с URL образа
-в реестре.
+![Консоль github workflow build and push](images/22-build_app.png)
 
 ### release.yml
 
@@ -245,10 +241,9 @@ docker push cr.yandex/crph52se6qjtjg937i7h/devops-diplom-app:v0.1.0
       }
 ```
 
-**Место для скриншота 31:** успешный запуск workflow `Release`
-в GitHub Actions.
+**Консоль github workflow release:**
 
-**Место для скриншота 32:** лог шага `Trigger deploy in devops-diplom-k8s`.
+![Консоль github workflow release](images/23-release_app.png)
 
 ## 3.8 Секреты CI/CD приложения
 
@@ -263,8 +258,9 @@ docker push cr.yandex/crph52se6qjtjg937i7h/devops-diplom-app:v0.1.0
 GitHub автоматически маскирует эти значения в логах, поэтому в
 выводе workflow вместо реальных данных появляются `***`.
 
-**Место для скриншота 33:** страница GitHub Secrets в репозитории
-`devops-diplom-app`.
+**Консоль github secrets:**
+
+![Консоль github secrets](images/24-git_secrets.png)
 
 ## 3.9 Итоги главы
 

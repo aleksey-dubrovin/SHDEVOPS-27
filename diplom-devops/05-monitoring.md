@@ -21,9 +21,9 @@
 Такой набор покрывает все уровни наблюдаемости: от железа до
 приложений. Все метрики доступны в едином интерфейсе Grafana.
 
-**Место для скриншота 34:** схема стека мониторинга. Prometheus
-собирает метрики с targets, Alertmanager обрабатывает алерты,
-Grafana отображает дашборды, max-bot получает webhook.
+**Схема стека мониторинга:**
+
+![Схема стека мониторинга](images/26-monitoring_stack.png)
 
 ## 4.2 Развёртывание через Helm
 
@@ -86,9 +86,6 @@ alertmanager:
     configSecret: alertmanager-config
 ```
 
-**Место для скриншота 35:** содержимое
-`helm/monitoring-values.yaml`.
-
 ## 4.3 Распределение подов по узлам
 
 После первого развёртывания все компоненты мониторинга оказались
@@ -137,8 +134,9 @@ grafana:
 разных узлах, нагрузка выровнялась (46% и 63% memory limits вместо
 83% и 23%). Grafana перестала падать.
 
-**Место для скриншота 36:** вывод `kubectl get pods -n monitoring -o wide`
-с распределением подов по двум узлам.
+**Распределением подов по двум узлам:**
+
+![Распределением подов по двум узлам](images/25-k8s_monitoring.png)
 
 ## 4.4 Grafana с HTTPS
 
@@ -191,12 +189,9 @@ fake-сертификат. Оказалось, что начиная с верс
 эта аннотация запрещена из-за безопасности и контроллер **молча
 пропускает** Ingress с ней. Убрав аннотацию, я получил рабочий HTTPS.
 
-**Место для скриншота 37:** браузер с `https://monitoring.dubrovins.ru`,
-зелёный замок и страница логина Grafana.
+**Цепочка сертификатов:**
 
-**Место для скриншота 38:** вывод
-`openssl s_client -connect monitoring.dubrovins.ru:443` с цепочкой
-сертификатов.
+![Цепочка сертификатов](images/27-monitoring_tls.png)
 
 ## 4.5 Дашборды Grafana
 
@@ -212,11 +207,15 @@ fake-сертификат. Оказалось, что начиная с верс
 автоматически подхватываются. Они позволяют увидеть в реальном
 времени состояние всего кластера.
 
-**Место для скриншота 39:** дашборд
-`Kubernetes / Compute Resources / Cluster`.
+**Дашборд `Kubernetes / Compute Resources / Cluster`:**
 
-**Место для скриншота 40:** дашборд `Node Exporter / Nodes`
-с метриками CPU и памяти.
+![Kubernetes / Compute Resources / Cluster](images/30-grafana_cluster.png)
+
+![Kubernetes / Compute Resources / Nodes](images/29-grafana_nodes.png)
+
+**Страница `Status → Targets` в Prometheus:**
+
+![Страница `Status → Targets` в Prometheus](images/28-prometheus_exporters.png)
 
 ## 4.6 Prometheus UI
 
@@ -231,9 +230,6 @@ kubectl -n monitoring port-forward svc/prometheus-kube-prometheus-prometheus 909
 - Проверить статус targets (Status → Targets).
 - Посмотреть активные алерты (Alerts).
 - Выполнить PromQL-запросы (Graph).
-
-**Место для скриншота 41:** страница `Status → Targets` в Prometheus
-со всеми targets в статусе `UP`.
 
 ## 4.7 Alertmanager и интеграция с MAX
 
@@ -319,15 +315,13 @@ kubectl -n monitoring exec -it alertmanager-prometheus-kube-prometheus-alertmana
 
 В выводе виден ресивер `max-bot` с URL webhook:
 
-```
+```text
 receivers:
 - name: max-bot
   webhook_configs:
   - send_resolved: true
     url: http://max-bot.monitoring.svc.cluster.local:8080/webhook
 ```
-
-**Место для скриншота 42:** вывод команды с ресивером `max-bot`.
 
 ## 4.8 MAX Bot
 
@@ -408,11 +402,9 @@ INFO:max-bot:Message sent to MAX
 INFO:werkzeug:10.112.1.90 - - [21/Sep/2026 11:20:58] "POST /webhook HTTP/1.1" 200 -
 ```
 
-**Место для скриншота 43:** уведомление в MAX с текстом алерта
-(`Prometheus Alert / Alert: TestWarningAlert`).
+**Уведомление в MAX с текстом алерта:**
 
-**Место для скриншота 44:** логи max-bot с записями
-`Message sent to MAX`.
+![Уведомление в MAX с текстом алерта](images/31-max_bot.png)
 
 ## 4.9 PrometheusRule
 
